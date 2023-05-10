@@ -3,8 +3,9 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   },
-  params: {                                                             // A parte de enviar mis API_KEY por los "headers", puedo usar "params" e indicar cualos son los parámetros que podemos agregar, siempre en formato de objeto
+  params: {                                                                                           // A parte de enviar mis API_KEY por los "headers", puedo usar "params" e indicar cualos son los parámetros que podemos agregar, siempre en formato de objeto, y los primero valores "key" pueden escribirse sin comillas (api_key: API_KEY)
     'api_key': API_KEY,
+    'language': 'es-ES',                                                                              // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
   }
 })
 
@@ -33,7 +34,7 @@ async function getTrendingMoviesPreview () {                                    
 
 
 async function getCategoriesPreview() {                                                               // Consume una petición que retorna las categorias de pelicular y crea los elementos HTML para mostrarlos en el FrontEnd usando ".forEach()"
-  const { data } = await api(`genre/movie/list?language=es`);                            // Al usar Axios ya no tengo que escribir mi URL base ya que ya la declaré             
+  const { data } = await api(`genre/movie/list`);                                                     // Al usar Axios ya no tengo que escribir mi URL base ya que ya la declaré             
   const categories = data.genres;
 
   categories.forEach(category => {
