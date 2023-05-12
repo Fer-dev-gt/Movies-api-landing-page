@@ -14,7 +14,7 @@ async function getTrendingMoviesPreview () {                                    
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
 
   movies.forEach(movie => {
-    const trendingMoviesPreviewContainer = document.querySelector
+    const trendingMoviesPreviewList = document.querySelector
     ('#trendingPreview .trendingPreview-movieList');                                                  // Para seleccionar al elemento interno puedo usar los selectores como en CSS donde indico a cualquier elemento ('.trendingPreview-movieList') que se encuentre en su padre ('#trendingPreview')
 
     const movieContainer = document.createElement('div');
@@ -28,7 +28,7 @@ async function getTrendingMoviesPreview () {                                    
     );
 
     movieContainer.appendChild(movieImg);
-    trendingMoviesPreviewContainer.appendChild(movieContainer);
+    trendingMoviesPreviewList.appendChild(movieContainer);
   });
 }
 
@@ -38,7 +38,7 @@ async function getCategoriesPreview() {                                         
   const categories = data.genres;
 
   categories.forEach(category => {
-    const previewCategoriesContainer = document.querySelector('#categoriesPreview .categoriesPreview-list');
+    const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
     
     const categoryContainer = document.createElement('div');
     categoryContainer.classList.add('category-container');
@@ -50,7 +50,7 @@ async function getCategoriesPreview() {                                         
 
     categoryTitle.appendChild(categoryTitleText);
     categoryContainer.appendChild(categoryTitle);
-    previewCategoriesContainer.appendChild(categoryContainer);
+    categoriesPreviewList.appendChild(categoryContainer);
   });
 }
 
