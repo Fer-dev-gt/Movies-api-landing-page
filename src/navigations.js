@@ -9,6 +9,7 @@ trendingBtn.addEventListener('click', () => {                                 //
 arrowBtn.addEventListener('click', () => {                                   // Hago que la flecha blanca/morada cambie la URL a #home y por ende nos enviará a esa vista
   location.hash = '#home';
 });
+
 window.addEventListener('DOMContentLoaded', navigator, false);                // Se ejecuta la función "navigator" cuando se cargan todos los componentes de HTML
 window.addEventListener('hashchange', navigator, false);                      // Se ejecuta la función "navigator" cada vez que se cambia el "hash" #
 
@@ -16,17 +17,11 @@ window.addEventListener('hashchange', navigator, false);                      //
 function navigator () {                                                       // Revisa con que "hash" # termina la URL y ejecuta una función dependiendo del "hash"
   console.log({ location });
 
-  if(location.hash.startsWith('#trends')) {                                   // Verificamos lo que dice nuestra URL si contiene el "hash" (#) y ejecutamos la pantalla correspondiente a cada hash
-    trendsPage();
-  } else if (location.hash.startsWith('#search=')) {
-    searchPage();
-  } else if (location.hash.startsWith('#movie=')) {
-    movieDetailsPage();
-  } else if (location.hash.startsWith('#category=')) {
-    categoriesPage();
-  } else {
-    homePage();
-  }
+  location.hash.startsWith('#trends')  ? trendsPage()       :                 // En vez de anidar y escribir tanso "if/else if" puedo "anidar Operadores Ternarios" para hacer las verificaciones
+  location.hash.startsWith('#search=') ? searchPage()       :
+  location.hash.startsWith('#movie=')  ? movieDetailsPage() :
+  location.hash.startsWith('category=') ? categoriesPage()  :
+  homePage();
 }
 
 function homePage() {
