@@ -12,9 +12,51 @@ const api = axios.create({
 async function getTrendingMoviesPreview () {                                                          // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+  categoryGenerator(movies, trendingMoviesPreviewList);
+}
 
+
+async function getCategoriesPreview() {                                                               // Consume una petición que retorna las categorias de pelicular y crea los elementos HTML para mostrarlos en el FrontEnd usando ".forEach()"
+  const { data } = await api(`genre/movie/list`);                                                     // Al usar Axios ya no tengo que escribir mi URL base ya que ya la declaré             
+  const categories = data.genres;
+  categoriesPreviewList.innerHTML = '';
+
+  categories.forEach(category => {
+    const categoryContainer = document.createElement('div');
+    categoryContainer.classList.add('category-container');
+
+    const categoryTitle = document.createElement('h3');
+    categoryTitle.classList.add('category-title');
+    categoryTitle.setAttribute('id', `id${category.id}`);
+
+    categoryTitle.addEventListener('click', () => {                                                   // Hago que cada elemento de los géneros manden a su respectiva categoría usando los #
+      location.hash = `#category=${category.id}-${category.name}`;
+    })
+
+    const categoryTitleText = document.createTextNode(category.name);
+    categoryTitle.appendChild(categoryTitleText);
+    categoryContainer.appendChild(categoryTitle);
+    categoriesPreviewList.appendChild(categoryContainer);
+  });
+}
+
+
+async function getMoviesByCategory (id) {                                                             // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
+  const { data } = await api(`discover/movie`, {                                                      // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
+    params: {                                                                                         // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
+      with_genres: id,
+    },
+  });         
+
+  const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+  genericSection.innerHTML = ""; 
+  categoryGenerator(movies, genericSection);
+}
+
+
+function categoryGenerator(movies, parentContainer) {
+  parentContainer.innerHTML = '';
   movies.forEach(movie => {
-    const trendingMoviesPreviewList = document.querySelector
     ('#trendingPreview .trendingPreview-movieList');                                                  // Para seleccionar al elemento interno puedo usar los selectores como en CSS donde indico a cualquier elemento ('.trendingPreview-movieList') que se encuentre en su padre ('#trendingPreview')
 
     const movieContainer = document.createElement('div');
@@ -28,33 +70,9 @@ async function getTrendingMoviesPreview () {                                    
     );
 
     movieContainer.appendChild(movieImg);
-    trendingMoviesPreviewList.appendChild(movieContainer);
+    parentContainer.appendChild(movieContainer);
   });
-}
-
-
-async function getCategoriesPreview() {                                                               // Consume una petición que retorna las categorias de pelicular y crea los elementos HTML para mostrarlos en el FrontEnd usando ".forEach()"
-  const { data } = await api(`genre/movie/list`);                                                     // Al usar Axios ya no tengo que escribir mi URL base ya que ya la declaré             
-  const categories = data.genres;
-
-  categories.forEach(category => {
-    const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
-    
-    const categoryContainer = document.createElement('div');
-    categoryContainer.classList.add('category-container');
-
-    const categoryTitle = document.createElement('h3');
-    categoryTitle.classList.add('category-title');
-    categoryTitle.setAttribute('id', `id${category.id}`);
-    const categoryTitleText = document.createTextNode(category.name);
-
-    categoryTitle.appendChild(categoryTitleText);
-    categoryContainer.appendChild(categoryTitle);
-    categoriesPreviewList.appendChild(categoryContainer);
-  });
-}
-
-
+} 
 
 
 

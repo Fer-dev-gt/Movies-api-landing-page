@@ -20,7 +20,7 @@ function navigator () {                                                       //
   location.hash.startsWith('#trends')  ? trendsPage()       :                 // En vez de anidar y escribir tanso "if/else if" puedo "anidar Operadores Ternarios" para hacer las verificaciones
   location.hash.startsWith('#search=') ? searchPage()       :
   location.hash.startsWith('#movie=')  ? movieDetailsPage() :
-  location.hash.startsWith('category=') ? categoriesPage()  :
+  location.hash.startsWith('#category=') ? categoriesPage()  :
   homePage();
 }
 
@@ -110,4 +110,12 @@ function categoriesPage() {
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   movieDetailSection.classList.add('inactive');
+
+  const [_, categoryData] = location.hash.split('=')                                // Nos crea un nuevo Array tomando de separación el simbolo indicado (=), el array seria asi: ['#category', 'id-name'], Puedo asignar los valores como dice ECMAScript 6 con [varible1, variable2] y la primer variable solo la llame "_" porque no me va a sevir mucho en realidad
+  const [categoryId, categoryName] = categoryData.split('-');                       // Vuelo a crear un nuevo Array con el objetivo de separa el número de id con el simbolo "-", el valor que necesito lo guardo en la variable "categoryId" (ECMAScript 6) y lo mando como argumento en la función para recibir las peliculas por categoria
+
+  const categoryNameAccent = decodeURI(categoryName);                               // Como mostramos el "categoryName" en la URL las tildes y espacios nos lo codifica en simbolos parecidos a "%20", para descodificarlos usamos el método "decodeURI"
+  headerCategoryTitle.innerHTML = `${categoryNameAccent}`;                          // Indicamos que muestre el titulo de la categoria correspondiente
+
+  getMoviesByCategory(categoryId);
 };
