@@ -1,5 +1,5 @@
 searchFormBtn.addEventListener('click', () => {                               // Le agrego un EventListener al butón de Form (Capture el valor del elemento HTML en el modulo "nodes.js" asi ya no lo tengo que hacer acá) y le digo que cada vez que le hagan click cambie el "hash" de la URL a #search=
-  location.hash = '#search=';
+  location.hash = `#search=${searchFormInput.value}`;                         // Cambio el "hash" y le agrego el valor del input del buscador de peliculas para que aparezca el texto de lo que ingreso el usuario
 });
 
 trendingBtn.addEventListener('click', () => {                                 // Hago que el boton de tendencias cambie la URL a #trends y por ende nos enviará a esa vista
@@ -22,6 +22,9 @@ function navigator () {                                                       //
   location.hash.startsWith('#movie=')  ? movieDetailsPage() :
   location.hash.startsWith('#category=') ? categoriesPage()  :
   homePage();
+
+  document.body.scrollTop = 0;                                                // Con estas dos lines de código, empleo el métedo "scrollTop()" para asegurarme que cada vez que entro a una nueva categoria o vista se abra en la parte arriba y evitar que se muestre al inicio en cualquier otra parte
+  document.documentElement.scrollTop = 0;                                     // Esta 2 línea hacen lo mismo pero por temas de soporte a varios navegadores lo escribo de otra forma para que cubra a cualquier navegador (Parece ser Safari)
 }
 
 function homePage() {
@@ -69,13 +72,16 @@ function searchPage() {
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
   headerTitle.classList.add('inactive');
-  headerCategoryTitle.classList.remove('inactive');
+  headerCategoryTitle.classList.add('inactive');
   searchForm.classList.remove('inactive');
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   movieDetailSection.classList.add('inactive');
+
+  const [_, query] = location.hash.split('=')                                // ['#search', 'buscador'] Ese es el array que extraigo de mi URL y lo uso para separar el valor del texto que escribio el usuario en el buscador y que será guardado en la variable "query"
+  getMoviesBySearch(query);                                                  // Invocamos a la función para generar las fichas de las peliculas con la información de la variable "query" que guarda lo que el usuario quiere buscar
 };
 
 function movieDetailsPage() {
