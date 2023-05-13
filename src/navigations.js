@@ -12,14 +12,22 @@ arrowBtn.addEventListener('click', () => {                                    //
 });
 
 headerTitle.addEventListener('click', () => location.hash = "#home");         // Si hace click en el título de la página nos devuelve al Home
-window.addEventListener('DOMContentLoaded', navigator, false);                // Se ejecuta la función "navigator" cuando se cargan todos los componentes de HTML
 window.addEventListener('hashchange', navigator, false);                      // Se ejecuta la función "navigator" cada vez que se cambia el "hash" #
-
-window.addEventListener('DOMContentLoaded', () => {                           // Para un buen funcionamiento de la flecha blanca, le agrego un Evento al objeto Window cada vez que se carge el contenido del DOM,
+window.addEventListener('DOMContentLoaded', () => {                           // Para un buen funcionamiento de la flecha blanca, le agrego un Evento al objeto Window cada vez que se carge el contenido del DOM, Se ejecuta la función "navigator" cuando se cargan todos los componentes de HTML
   navigator();
   window.history.pushState({ loadUrl: window.location.href }, null, '');      // Agregando un estado de carga inical, cuando se cambie un "hostname" a otro o vengamos de otro "hostname" entonces podemos agregar ese href de carga inicial con el "href"
   }, false,                                                                   // Para manejarlo con "Bubbling" el tercer parámetro lo colocamos como "false"
 );                                                                            // Esa propiedad de carga de estado la he llamado "loadUrl" entonces si cargamos la aplicación desde su inicio el "href" no deberá contener ningún tipo de "hash" pero si venimos de Youtube por ejemplo entonces el "loadUrl" nos dará todo el "href" se esa ruta de carga con todo y "hash"
+
+searchForm.addEventListener('submit', (event) => {                            // Con esta instrucción le digo al formulario que cuando se haga un "submit/enter" haga un "preventDefault()"
+  event.preventDefault();
+});
+
+searchFormInput.addEventListener('keyup', (event) => {                        // A la cajita de busqueda le agrego un evento para que cada vez que se de un "Enter" modifique la URL con el "hash" con el valor de lo que escribió el usuario
+  if(event.key === 'Enter') {
+    location.hash = `#search=${searchFormInput.value.trim()}`;    
+  }
+});
 
 
 function navigator () {                                                       // Revisa con que "hash" # termina la URL y ejecuta una función dependiendo del "hash"
