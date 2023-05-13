@@ -7,15 +7,19 @@ trendingBtn.addEventListener('click', () => {                                 //
 });
 
 arrowBtn.addEventListener('click', () => {                                    // Hago que la flecha blanca/morada cambie la URL a #home y por ende nos enviará a esa vista
-  console.log(document.domain);
-  //location.hostname.startsWith("1") ? history.back() : location.hash='#home'; // Para lograr que regresar al "Home" incluso si la página anterior es de cualquier otro sitio Ej "Youtube" hago una validación para comprobar que el nombre "hostname" corresponda al nombre que deberia ser de nuestra página, si no lo es significa que la pagina anterior era de otro sitio web y no de nuestra página. Este método "history.back()" hace que el navegador vuelva atrás una página en la sesión
-  history.back();
+  const stateLoad = history.state ? history.state.loadUrl : '';               // Después de que naveguemos en diferentes rutas de la aplicación el 'window.history.state' se borra dando como resultado "null" por eso es que la variable "stateLoad" regresamos un string vacío o lo que queremos realmente que es el "window.history.state.loadUrl"
+  stateLoad.includes('#') ? location.hash = '#home' : history.back();         // Para lograr que regresar al "Home" incluso si la página anterior es de cualquier otro sitio Ej "Youtube" hago una validación para comprobar que el nombre "hostname" corresponda al nombre que deberia ser de nuestra página, si no lo es significa que la pagina anterior era de otro sitio web y no de nuestra página. Este método "history.back()" hace que el navegador vuelva atrás una página en la sesión
 });
 
 headerTitle.addEventListener('click', () => location.hash = "#home");         // Si hace click en el título de la página nos devuelve al Home
-
 window.addEventListener('DOMContentLoaded', navigator, false);                // Se ejecuta la función "navigator" cuando se cargan todos los componentes de HTML
 window.addEventListener('hashchange', navigator, false);                      // Se ejecuta la función "navigator" cada vez que se cambia el "hash" #
+
+window.addEventListener('DOMContentLoaded', () => {                           // Para un buen funcionamiento de la flecha blanca, le agrego un Evento al objeto Window cada vez que se carge el contenido del DOM,
+  navigator();
+  window.history.pushState({ loadUrl: window.location.href }, null, '');      // Agregando un estado de carga inical, cuando se cambie un "hostname" a otro o vengamos de otro "hostname" entonces podemos agregar ese href de carga inicial con el "href"
+  }, false,                                                                   // Para manejarlo con "Bubbling" el tercer parámetro lo colocamos como "false"
+);                                                                            // Esa propiedad de carga de estado la he llamado "loadUrl" entonces si cargamos la aplicación desde su inicio el "href" no deberá contener ningún tipo de "hash" pero si venimos de Youtube por ejemplo entonces el "loadUrl" nos dará todo el "href" se esa ruta de carga con todo y "hash"
 
 
 function navigator () {                                                       // Revisa con que "hash" # termina la URL y ejecuta una función dependiendo del "hash"
