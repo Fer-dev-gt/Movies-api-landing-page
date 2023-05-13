@@ -125,4 +125,12 @@ async function getMovieById(id) {                                               
   movieDetailScore.textContent = movie.vote_average;
 
   createCategories(movie.genres, movieDetailCategoriesList);                                         // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione
+  getRelatedMoviesById(id);
+}
+
+async function getRelatedMoviesById(id) {
+  const { data } = await api(`movie/${id}/recommendations`);
+  const relatedMovies = data.results;
+  console.log(relatedMovies);
+  createMovies(relatedMovies, relatedMoviesContainer);
 }
