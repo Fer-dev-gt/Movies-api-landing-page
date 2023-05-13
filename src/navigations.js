@@ -6,9 +6,13 @@ trendingBtn.addEventListener('click', () => {                                 //
   location.hash = '#trends';
 });
 
-arrowBtn.addEventListener('click', () => {                                   // Hago que la flecha blanca/morada cambie la URL a #home y por ende nos enviará a esa vista
-  location.hash = '#home';
+arrowBtn.addEventListener('click', () => {                                    // Hago que la flecha blanca/morada cambie la URL a #home y por ende nos enviará a esa vista
+  console.log(document.domain);
+  //location.hostname.startsWith("1") ? history.back() : location.hash='#home'; // Para lograr que regresar al "Home" incluso si la página anterior es de cualquier otro sitio Ej "Youtube" hago una validación para comprobar que el nombre "hostname" corresponda al nombre que deberia ser de nuestra página, si no lo es significa que la pagina anterior era de otro sitio web y no de nuestra página. Este método "history.back()" hace que el navegador vuelva atrás una página en la sesión
+  history.back();
 });
+
+headerTitle.addEventListener('click', () => location.hash = "#home");         // Si hace click en el título de la página nos devuelve al Home
 
 window.addEventListener('DOMContentLoaded', navigator, false);                // Se ejecuta la función "navigator" cuando se cargan todos los componentes de HTML
 window.addEventListener('hashchange', navigator, false);                      // Se ejecuta la función "navigator" cada vez que se cambia el "hash" #
@@ -54,7 +58,7 @@ function trendsPage() {
   headerSection.style.background = '';
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
-  headerTitle.classList.add('inactive');
+  headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.remove('inactive');
   searchForm.classList.add('inactive');
 
@@ -62,6 +66,9 @@ function trendsPage() {
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   movieDetailSection.classList.add('inactive');
+
+  headerCategoryTitle.innerHTML = 'Tendencias';
+  getTrendingMovies();
 };
 
 function searchPage() {
@@ -71,7 +78,7 @@ function searchPage() {
   headerSection.style.background = '';
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
-  headerTitle.classList.add('inactive');
+  headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.add('inactive');
   searchForm.classList.remove('inactive');
 
@@ -108,7 +115,7 @@ function categoriesPage() {
   headerSection.style.background = '';
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
-  headerTitle.classList.add('inactive');
+  headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.remove('inactive');
   searchForm.classList.add('inactive');
 

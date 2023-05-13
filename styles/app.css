@@ -139,6 +139,7 @@ button {
 
 .header-title {
   margin-bottom: 16px;
+  cursor: pointer;
 }
 
 .header-arrow {

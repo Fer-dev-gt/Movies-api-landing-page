@@ -71,7 +71,7 @@ async function getCategoriesPreview() {                                         
 }
 
 
-async function getMoviesByCategory (id) {                                                             // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
+async function getMoviesByCategory(id) {                                                             // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
   const { data } = await api(`discover/movie`, {                                                      // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
     params: {                                                                                         // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
       with_genres: id,
@@ -85,6 +85,7 @@ async function getMoviesByCategory (id) {                                       
 
 
 async function getMoviesBySearch(query) {                                                             // Se ejecuta cuando le damos click al boton de busqueda/lupa genera la lista de peliculas con el texto que el usuario quiere buscar y las muestra
+  query = decodeURI(query);                                                                           // Decodificamos la URL de la variable "query" para quitarle el simbolo "%20" de los caracteres especiales y lo guardo en la variable "query" para poder buscar películas que tengan espacios y tildes en su nombre
   const { data } = await api(`search/movie`, {                                                      
     params: {                                                                                         
       query,                                                                                          // La API nos dice que en sus parametro tenemos que enviar el "texto de busqueda o QUERY" esto lo hacemos a traves del objeto "params" y como el atributo "query" se llama igual a nuestra variable "query" no es necesrio escribirlos en formato clave/valor, simplemente como "query"
@@ -96,3 +97,9 @@ async function getMoviesBySearch(query) {                                       
   createMovies(movies, genericSection);
 }
 
+
+async function getTrendingMovies() {                                                          // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
+  const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+  createMovies(movies, genericSection);
+}
