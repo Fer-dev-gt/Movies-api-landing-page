@@ -18,6 +18,9 @@ function createMovies(movies, parentContainer) {                                
 
     const movieContainer = document.createElement('div');
     movieContainer.classList.add('movie-container');
+    movieContainer.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
+      location.hash = `#movie=${movie.id}`;
+    });
 
     const movieImg = document.createElement('img');
     movieImg.classList.add('movie-img');
@@ -61,6 +64,7 @@ async function getTrendingMoviesPreview () {                                    
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   createMovies(movies, trendingMoviesPreviewList);
+  console.log(movies);
 }
 
 
@@ -71,7 +75,7 @@ async function getCategoriesPreview() {                                         
 }
 
 
-async function getMoviesByCategory(id) {                                                             // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
+async function getMoviesByCategory(id) {                                                              // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
   const { data } = await api(`discover/movie`, {                                                      // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
     params: {                                                                                         // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
       with_genres: id,
@@ -98,8 +102,27 @@ async function getMoviesBySearch(query) {                                       
 }
 
 
-async function getTrendingMovies() {                                                          // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+async function getTrendingMovies() {                                                                  // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   createMovies(movies, genericSection);
+}
+
+async function getMovieById(id) {                                                                     // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  const { data: movie } = await api(`movie/${id}`);                                                   // Como el resultado no es un Objeto con lista y demas ya no tenemos que hacer un "data.results" simplemento lo guardmao en la varible "movie", para hacerlo Axios nos pide que lo hagamos con este formato "{data: movie}" para guardarlo en la variable "movie", es un Objeto con la información de mi película
+
+  const movieImgUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;                         // Guardo en la variable "MovieImgUrl" una imagen de 500 px con la id de la pelicula seleccionada
+  headerSection.style.background = `
+    linear-gradient(
+      180deg, 
+      rgba(0, 0, 0, 0.35) 19.27%, 
+      rgba(0, 0, 0, 0) 29.17%
+      ),
+    url(${movieImgUrl})`;                                                                             // Muestro la URL de la imagen de la pelicula seleccionada con el "id"
+  
+  movieDetailTitle.textContent = movie.title;
+  movieDetailDescription.textContent = movie.overview;
+  movieDetailScore.textContent = movie.vote_average;
+
+  createCategories(movie.genres, movieDetailCategoriesList);                                         // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione
 }
