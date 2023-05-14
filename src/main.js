@@ -110,8 +110,8 @@ async function getTrendingMovies() {                                            
 
 async function getMovieById(id) {                                                                     // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
   const { data: movie } = await api(`movie/${id}`);                                                   // Como el resultado no es un Objeto con lista y demas ya no tenemos que hacer un "data.results" simplemento lo guardmao en la varible "movie", para hacerlo Axios nos pide que lo hagamos con este formato "{data: movie}" para guardarlo en la variable "movie", es un Objeto con la información de mi película
-
   const movieImgUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;                         // Guardo en la variable "MovieImgUrl" una imagen de 500 px con la id de la pelicula seleccionada
+  
   headerSection.style.background = `
     linear-gradient(
       180deg, 
@@ -122,15 +122,16 @@ async function getMovieById(id) {                                               
   
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
-  movieDetailScore.textContent = movie.vote_average;
+  movieDetailScore.textContent = movie.vote_average.toFixed(1);                                      // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
 
   createCategories(movie.genres, movieDetailCategoriesList);                                         // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione
   getRelatedMoviesById(id);
 }
 
 async function getRelatedMoviesById(id) {
-  const { data } = await api(`movie/${id}/recommendations`);
+  const { data } = await api(`movie/${id}/similar`);
   const relatedMovies = data.results;
   console.log(relatedMovies);
   createMovies(relatedMovies, relatedMoviesContainer);
+  relatedMoviesContainer.scrollTo(0, 0);                                                             // Con el método "scrollTo(0, 0)" le indico al contenedor que comience en la pocición (0, 0)
 }
