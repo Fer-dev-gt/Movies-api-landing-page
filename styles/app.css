@@ -184,7 +184,7 @@ button {
   max-width: 150px;
 }
 
-/* Categories Preview*/
+/* Categories Preview */
 .category-container {
   width: 45%;
 }
@@ -320,9 +320,41 @@ footer {
 
 
 @media (min-width: 768px){
+  /* General */
   html {
     background-color: var(--yellow);
   }
+  /* Shared Styles*/
+  .categoriesPreview-list, .categories-list {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    flex-wrap: wrap;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  /* Header */
+
+  /* Trending Preview */
+
+  /* Categories Preview */
+  .category-title {
+    margin-bottom: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: ellipsis;
+    margin-right: 20px;
+  }
+
+  /* TODO: cambiar color por ID de la categoría */
+
+  /* Generic List (search, trending & category) */
+
+  /* Movie Detail */
+
+  /* Footer */
 }
 
 
