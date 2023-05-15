@@ -18,8 +18,9 @@
   --red: #F09D9D;
 
   --font-family-titles: 'Dosis', sans-serif;              /* Tambien puedo guardar el valor separado por comas para la fuente de unas letras*/     
+  --font-family-titles2: "Ubuntu", sans-serif;
   --font-family-text: 'Red Hat Display', sans-serif;
-  --font-weight-title1: 800;
+  --font-weight-title1: 900;
   --font-weight-title2: 700;
   --font-weight-text1: 400;
   --font-weight-text2: 500;
@@ -106,7 +107,7 @@ button {
 .header-container {
   padding-top: 40px;
 }
-.header-container--long {                                                       /* Este es un modificador (termina con --long) siguiento con la estructura BEM Block, Element, Modifier*/
+.header-container--long {                                                                                             /* Este es un modificador (termina con --long) siguiento con la estructura BEM Block, Element, Modifier*/
   background-image: url('');
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 19.27%, rgba(0, 0, 0, 0) 29.17%), url();
   background-size: cover !important;
@@ -150,6 +151,7 @@ button {
   height: 48px;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  background-color: var(--purple-dark-1);
 }
 
 /* Trending Preview*/
@@ -205,26 +207,70 @@ button {
   width: 8px;
   height: 8px;
 }
-
-#id28 { --idColor: var(--yellow); }
-#id12 { --idColor: var(--red); }
-#id16 { --idColor: var(--green); }
-#id35 { --idColor: var(--lightBlue); }
-#id80 { --idColor: var(--darkBlue); }
-#id99 { --idColor: var(--purple-dark-1); }
-#id18 { --idColor: var(--purple-medium-1); }
-#id10751 { --idColor: var(--yellow); }
-#id14 { --idColor: var(--red); }
-#id36 { --idColor: var(--green); }
-#id27 { --idColor: var(--lightBlue); }
-#id10402 { --idColor: var(--darkBlue); }
-#id9648 { --idColor: var(--purple-dark-1); }
-#id10749 { --idColor: var(--purple-medium-1); }
-#id878 { --idColor: var(--yellow); }
-#id10770 { --idColor: var(--red); }
-#id53 { --idColor: var(--green); }
-#id10752 { --idColor: var(--lightBlue); }
-#id37 { --idColor: var(--darkBlue); }
+.category-btn {
+  border-radius: 18px;
+  background-repeat: no-repeat;
+  background-position: 14px;
+  background-size: 21px;
+  padding-left: 2.8rem;
+}
+#id28 { --idColor: var(--yellow); 
+  background-image: url(../src/assets/action-24.png);
+}
+#id12 { --idColor: var(--red);
+  background-image: url(../src/assets/adventures-24.png);
+}
+#id16 { --idColor: var(--green); 
+  background-image: url(../src/assets/joystick-3-24.png);
+}
+#id35 { --idColor: var(--lightBlue); 
+  background-image: url(../src/assets/comedy-2-24.png);
+}
+#id80 { --idColor: var(--darkBlue); 
+  background-image: url(../src/assets/crime-24.png);
+}
+#id99 { --idColor: var(--purple-dark-1); 
+  background-image: url(../src/assets/documentary-24.png);
+}
+#id18 { --idColor: var(--purple-medium-1); 
+  background-image: url(../src/assets/drama-24.png);
+}
+#id10751 { --idColor: var(--yellow); 
+  background-image: url(../src/assets/conference-24.png);
+}
+#id14 { --idColor: var(--red); 
+  background-image: url(../src/assets/fantasy-24.png);
+}
+#id36 { --idColor: var(--green); 
+  background-image: url(../src/assets/historical-24.png);
+}
+#id27 { --idColor: var(--lightBlue); 
+  background-image: url(../src/assets/horror-24.png);
+}
+#id10402 { --idColor: var(--darkBlue); 
+  background-image: url(../src/assets/musical-24.png);
+}
+#id9648 { --idColor: var(--purple-dark-1); 
+  background-image: url(../src/assets/novel-24.png);
+}
+#id10749 { --idColor: var(--purple-medium-1); 
+  background-image: url(../src/assets/novel-24.png);
+}
+#id878 { --idColor: var(--yellow); 
+  background-image: url(../src/assets/sci-fi-24.png);
+}
+#id10770 { --idColor: var(--red); 
+  background-image: url(../src/assets/hdtv-24.png);
+}
+#id53 { --idColor: var(--green); 
+  background-image: url(../src/assets/triller-24.png);
+}
+#id10752 { --idColor: var(--lightBlue); 
+  background-image: url(../src/assets/triller-24.png);
+}
+#id37 { --idColor: var(--darkBlue); 
+  background-image: url(../src/assets/western-24.png);
+}
 
 
 /* Generic List (search, trending & category) */
@@ -324,6 +370,7 @@ footer {
   html {
     background-color: var(--yellow);
   }
+
   /* Shared Styles*/
   .categoriesPreview-list, .categories-list {
     display: grid;
@@ -334,11 +381,20 @@ footer {
     overflow-y: hidden;
     white-space: nowrap;
   }
+  .categoriesPreview-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 12px 200px 0px 200px;
+  }
   /* Header */
 
   /* Trending Preview */
 
   /* Categories Preview */
+  .category-container {
+    width: 45%;
+  }
   .category-title {
     margin-bottom: 8px;
     cursor: pointer;
@@ -346,6 +402,27 @@ footer {
     overflow: visible;
     text-overflow: ellipsis;
     margin-right: 20px;
+  }
+  .category-btn {
+    border-radius: 18px;
+    margin: 0 12px 8px 0;
+    background-color: var(--idColor);
+    border: none;
+    color: var(--purple-light-2);
+    font-weight: var(--font-weight-text2);
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .category-btn p{
+    padding-right: 12px;
+    padding-left: 4px;
+  }
+  .categoriesPreview-title {
+    text-align: center;
+    font-family: var(--font-family-titles2);
+    font-weight: var(--font-weight-title1);
+    font-size: 30px;
+    letter-spacing: -1px;
   }
 
   /* TODO: cambiar color por ID de la categoría */
@@ -358,4 +435,27 @@ footer {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*@media (min-width: 600px){
+  .categoriesPreview-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 12px 100px 0px 100px;
+  }
+}*/
 

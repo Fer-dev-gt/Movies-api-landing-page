@@ -39,6 +39,7 @@ function createCategories(categories, container) {
   container.innerHTML = '';
 
   categories.forEach(category => {
+    /*
     const categoryContainer = document.createElement('div');
     categoryContainer.classList.add('category-container');
 
@@ -54,7 +55,35 @@ function createCategories(categories, container) {
     categoryTitle.appendChild(categoryTitleText);
     categoryContainer.appendChild(categoryTitle);
     container.appendChild(categoryContainer);
+
+
+    */
+   const categoryContainer = document.createElement('div');
+   categoryContainer.className = 'category-container';
+
+   const button = document.createElement('button');
+   button.className = 'category-btn';
+   button.setAttribute('id', `id${category.id}`);
+
+   button.addEventListener('click', () => {
+     location.hash = `#category=${category.id}-${category.name}`;
+     // location.reload()
+     console.log("click button by category", category.name)
+     window.scroll({
+       top: 566,
+       behavior: 'smooth'
+     })
+
+    })
+
+    const p = document.createElement('p');
+    p.innerText = `${category.name}`;
+    button.appendChild(p);
+    //categoryContainer.appendChild(button);
+    container.appendChild(button);
   });
+
+    
 }
 
 
