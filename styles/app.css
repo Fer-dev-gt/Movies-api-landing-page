@@ -218,6 +218,15 @@ button {
   background-position: 14px;
   background-size: 21px;
   padding-left: 2.8rem;
+  background-color: var(--idColor);
+  margin: 4px 8px;
+}
+.categoriesPreview-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+.category-btn p {
+  padding-right: 12px;
 }
 #id28 { --idColor: var(--yellow); 
   background-image: url(../src/assets/action-24.png);
