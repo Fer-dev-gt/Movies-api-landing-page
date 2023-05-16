@@ -366,17 +366,45 @@ footer {
   background-color: var(--purple-medium-3);
   color: var(--purple-light-2);
   text-align: center;
-  height: 48px;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 16px 8px;
+}
+footer p, ul {
+  max-width: 320px;
+  margin: 10px 10px;
+  text-align: center;
+}
+.tmdb-logo {
+  margin: 10px;
+  height: 15px;
+  width: auto;
+  padding-left: 8px;
+}
+footer img, svg {
+  width: 30px;
+}
+ul {
+  width: 100%;
+  max-width: 350px;
+  list-style: none;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  padding-inline-start: 0px;
+  max-width: 200px;
+}
+a, a:visited, a:focus {
+  text-decoration: none;
+  color: var(--green);
 }
 
 /* Navigation */
 .inactive {
   display: none;
 }
-
 
 
 @media (min-width: 768px){
