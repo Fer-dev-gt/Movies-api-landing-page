@@ -16,6 +16,8 @@
   --lightBlue: #A2EEE5;
   --darkBlue: #8EA2EA;
   --red: #F09D9D;
+  --black: #1C1C1C;
+  --color-white: #d9dbdd;
 
   --font-family-titles: 'Dosis', sans-serif;              /* Tambien puedo guardar el valor separado por comas para la fuente de unas letras*/     
   --font-family-titles2: "Ubuntu", sans-serif;
@@ -29,7 +31,7 @@ html {
   background-color: var(--purple-medium-3);
 }
 body {
-  background-color: var(--purple-light-1);
+  background-color: var(--black);
   color: var(--purple-dark-2);
   font-family: var(--font-family-text);
   font-weight: var(--font-weight-text1);
@@ -184,6 +186,9 @@ button {
   width: 150px;
   min-width: 150px;
   max-width: 150px;
+}
+.video--info, .media--name {
+  display: none;
 }
 
 /* Categories Preview */
@@ -390,6 +395,84 @@ footer {
   /* Header */
 
   /* Trending Preview */
+  .trendingPreview-movieList {
+    overflow-y: visible;
+    height: 100%;
+    padding-left: 88px;
+    padding-bottom: 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0px 40px 100px 0px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(min(100%, 250px), 2fr));
+    gap: 25px;
+  }
+  .trendingPreview-movieList .movie-container {
+    margin-right: 0px;
+    min-width: 320px;
+    max-width: 320px;
+    height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .trendingPreview-movieList .movie-container .movie-img {
+    height: 25rem;
+    border-radius: 1rem;
+    min-height: 225px;
+    width: 100%;
+    max-height: 25rem;
+    max-width: 100%;
+  }
+  .likeBtn--container::before {
+    content: '🤍';
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .8rem;
+    background-color: rgba(33, 36, 44,.7);
+  }
+  .likeBtn--container:hover::before,
+  .likeBtn--container.active::before {
+    content: '💛';
+    background-color: var(--black);
+    transform: translate(-0%, -0%) scale(1.25);
+    filter: drop-shadow(0 0rem 0rem rgba(0, 0, 0, 1));
+    z-index: 10;
+  }
+  .likeBtn__container--liked::before{
+    content: '💛';
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .8rem;
+    background-color: rgba(33, 36, 44,.7);
+    z-index: 10;
+}
+  .video--info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+  .video--info p {
+    color: var(--aqua);
+    overflow: hidden;
+  }
+  .media--ranting img {
+    width: 20px;
+    padding-right: 4px;
+  }
+  .media--ranting span {
+    color: var(--color-white);
+  }
 
   /* Categories Preview */
   .category-container {
@@ -402,6 +485,13 @@ footer {
     overflow: visible;
     text-overflow: ellipsis;
     margin-right: 20px;
+  }
+  .categoriesPreview-title {
+    text-align: center;
+    font-family: var(--font-family-titles2);
+    font-weight: var(--font-weight-title1);
+    font-size: 30px;
+    letter-spacing: -1px;
   }
   .category-btn {
     border-radius: 18px;
@@ -417,16 +507,9 @@ footer {
     padding-right: 12px;
     padding-left: 4px;
   }
-  .categoriesPreview-title {
-    text-align: center;
-    font-family: var(--font-family-titles2);
-    font-weight: var(--font-weight-title1);
-    font-size: 30px;
-    letter-spacing: -1px;
-  }
-
+  
   /* TODO: cambiar color por ID de la categoría */
-
+  
   /* Generic List (search, trending & category) */
 
   /* Movie Detail */

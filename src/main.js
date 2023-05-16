@@ -18,9 +18,32 @@ function createMovies(movies, parentContainer) {                                
 
     const movieContainer = document.createElement('div');
     movieContainer.classList.add('movie-container');
-    movieContainer.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
-      location.hash = `#movie=${movie.id}`;
+    
+    const likeButton = document.createElement('btn');
+    likeButton.classList.add('likeBtn--container');
+    likeButton.addEventListener('click', () => {
+      likeButton.classList.toggle('likeBtn__container--liked')
+      
     });
+
+    const videoInfo = document.createElement('div');
+    videoInfo.classList.add('video--info');
+
+    const mediaName = document.createElement('div');
+    mediaName.classList.add('media--name');
+
+    const parrafoVideoInfo = document.createElement('p');
+    parrafoVideoInfo.innerText = `${movie.title}`;
+    
+    const mediaRanting = document.createElement('div');
+    mediaRanting.classList.add('media--ranting');
+
+    const mediaNameImg = document.createElement('img');
+    mediaNameImg.setAttribute('src', './src/assets/start-flaticon.png')
+
+    const spanMedia = document.createElement('span');
+    spanMedia.innerText = `${movie.vote_average.toFixed(1)}`
+
 
     const movieImg = document.createElement('img');
     movieImg.classList.add('movie-img');
@@ -28,12 +51,16 @@ function createMovies(movies, parentContainer) {                                
     movieImg.setAttribute('src', 
     `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
     );
+    movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
+      location.hash = `#movie=${movie.id}`;
+    });
 
-    movieContainer.appendChild(movieImg);
+    mediaRanting.append(mediaNameImg, spanMedia);
+    videoInfo.append(parrafoVideoInfo, mediaRanting);
+    movieContainer.append(movieImg, likeButton, videoInfo);
     parentContainer.appendChild(movieContainer);
   });
 } 
-
 
 function createCategories(categories, container) {
   container.innerHTML = '';
