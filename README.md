@@ -1,7 +1,7 @@
 # Movies-api-landing-page
 Here I show my skills I acquired by learning how to consume different APIs to create modern landing pages, in this case it's about movies! 🍿🎥🍿
 Here you can checkout the results: https://fer-dev-gt.github.io/Movies-api-landing-page/#home
-Also the API I consumed for this project was provided by The Movie Data Base, ![you can use it here](https://developer.themoviedb.org/docs)
+Also the API I consumed for this project was provided by The Movie Data Base, [you can use it here](https://developer.themoviedb.org/docs)
 ### Some snapshots from the resutls, main page
 <img width="1799" alt="Screenshot 2023-05-17 at 16 21 38" src="https://github.com/Fer-dev-gt/Movies-api-landing-page/assets/119085740/3b0d868f-99d8-4d17-9505-d983f4471e16">
 ### Movie Detail
