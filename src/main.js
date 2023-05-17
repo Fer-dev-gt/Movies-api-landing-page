@@ -64,7 +64,7 @@ function createMovies(movies, parentContainer) {                                
   });
 } 
 
-function createCategories(categories, container) {
+function createCategories(categories, container) {                                                    // Crea botones con las categorias de las películas
   container.innerHTML = '';
 
   categories.forEach(category => {
@@ -113,6 +113,18 @@ function createCategories(categories, container) {
   });
 
     
+}
+
+function convertMovieTime(runtime){                                                                   // Función para convertir el formato de duración de peliculas de minutos a formato "horas minuto" 
+  if (runtime == 0) {
+    return '(?)';
+  }
+  const minutes = runtime;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  const formattedTime = `${hours}h ${remainingMinutes}m`;
+
+  return formattedTime;
 }
 
 
@@ -184,6 +196,7 @@ async function getMovieById(id) {                                               
   movieDetailDescription.textContent = movie.overview;
   movieDetailScore.textContent = movie.vote_average.toFixed(1);                                       // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
   movieDetailRelease.textContent = `Release Date:  ${movie.release_date}`;
+  movieDetailRuntime.textContent = `Duration: ${convertMovieTime(movie.runtime)}`;
   movieDetailImg.setAttribute('src', `https://image.tmdb.org/t/p/w500/${movie.poster_path}`)
 
   createCategories(movie.genres, movieDetailCategoriesList);                                          // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione

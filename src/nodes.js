@@ -30,6 +30,7 @@ const movieDetailDescription = $('.movieDetail-description');
 const movieDetailScore = $('.movieDetail-score');
 const movieDetailImg = $('.imgMovieDetail');
 const movieDetailRelease = $('.movieDetail-release');
+const movieDetailRuntime = $('.movieDetail-runtime');
 
 
 

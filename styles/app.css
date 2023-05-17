@@ -369,6 +369,9 @@ button {
   min-height: 187.5px;
   max-height: 187.5px;
 }
+.movieDetail-runtime{
+  margin-top: 0px;
+}
 
 /* Footer */
 footer {
