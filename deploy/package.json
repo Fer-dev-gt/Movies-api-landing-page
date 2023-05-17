@@ -4,7 +4,7 @@
   "description": "Here I'll show my skills and learning of consuming different APIs to create modern landing pages 🍿🎥🍿",
   "main": "index.html",
   "scripts": {
-    "publish": "gh-pages -d Movies-api-landing-page"
+    "publish": "gh-pages -d deployam"
   },
   "repository": {
     "type": "git",
