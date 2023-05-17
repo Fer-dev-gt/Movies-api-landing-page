@@ -278,13 +278,13 @@ button {
 #id10770 { --idColor: var(--red); 
   background-image: url(../src/assets/hdtv-24.png);
 }
-#id53 { --idColor: var(--green); 
+#id53 { --idColor: var(--orange); 
   background-image: url(../src/assets/triller-24.png);
 }
-#id10752 { --idColor: var(--lightBlue); 
+#id10752 { --idColor: var(--green); 
   background-image: url(../src/assets/triller-24.png);
 }
-#id37 { --idColor: var(--darkBlue); 
+#id37 { --idColor: var(--lightBlue); 
   background-image: url(../src/assets/western-24.png);
 }
 
@@ -456,6 +456,10 @@ a, a:visited, a:focus {
   .header-title {
     font-size: 50px;
   }
+  .header-title--categoryView{
+    text-align: center;
+    font-size: 70px;
+  }
   /* Trending Preview */
   .trendingPreview-movieList {
     overflow-y: visible;
@@ -485,6 +489,10 @@ a, a:visited, a:focus {
     width: 100%;
     max-height: 25rem;
     max-width: 100%;
+  }
+  .trendingPreview-title {
+    padding-left: 94px;
+    font-size: 48px;
   }
   .trendingPreview-btn {
     border-radius: 8px;
