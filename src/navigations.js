@@ -48,6 +48,7 @@ function homePage() {
 
   headerSection.classList.remove('header-container--long');
   headerSection.style.background = '';
+  headerSection.classList.remove('header-container--big');
   arrowBtn.classList.add('inactive');
   arrowBtn.classList.remove('header-arrow--white');
   headerTitle.classList.remove('inactive');
@@ -68,6 +69,7 @@ function trendsPage() {
 
   headerSection.classList.remove('header-container--long');
   headerSection.style.background = '';
+  headerSection.classList.remove('header-container--big');
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
   headerTitle.classList.remove('inactive');
@@ -88,6 +90,7 @@ function searchPage() {
 
   headerSection.classList.remove('header-container--long');
   headerSection.style.background = '';
+  headerSection.classList.remove('header-container--big');
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
   headerTitle.classList.remove('inactive');
@@ -107,10 +110,11 @@ function movieDetailsPage() {
   console.log('Movie!!');
 
   headerSection.classList.add('header-container--long');
+  headerSection.classList.add('header-container--big');
   //headerSection.style.background = '';
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.add('header-arrow--white');
-  headerTitle.classList.add('inactive');
+  headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.add('inactive');
   searchForm.classList.add('inactive');
 
@@ -128,6 +132,7 @@ function categoriesPage() {
 
   headerSection.classList.remove('header-container--long');
   headerSection.style.background = '';
+  headerSection.classList.remove('header-container--big');
   arrowBtn.classList.remove('inactive');
   arrowBtn.classList.remove('header-arrow--white');
   headerTitle.classList.remove('inactive');

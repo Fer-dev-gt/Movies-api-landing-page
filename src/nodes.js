@@ -28,7 +28,8 @@ const trendingBtn = $('.trendingPreview-btn');
 const movieDetailTitle = $('.movieDetail-title');
 const movieDetailDescription = $('.movieDetail-description');
 const movieDetailScore = $('.movieDetail-score');
-
+const movieDetailImg = $('.imgMovieDetail');
+const movieDetailRelease = $('.movieDetail-release');
 
 
 

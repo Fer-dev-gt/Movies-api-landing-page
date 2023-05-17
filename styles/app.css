@@ -320,12 +320,19 @@ button {
   width: 80%;
   margin: 0 0 16px 0;
   padding: 0;
+  font-size: 24px;
 }
 .movieDetail-score {
   display: inline-block;
   text-align: right;
   width: 18%;
   font-weight: var(--font-weight-title2);
+}
+.movieDetail-firstInfo{
+  display: flex;
+}
+.movieDetail-score{
+  text-align: left;
 }
 .movieDetail-score::before {
   content: '★';
@@ -432,7 +439,9 @@ a, a:visited, a:focus {
     margin: 12px 200px 0px 200px;
   }
   /* Header */
-
+  .header-container--big {
+    min-height: 700px;
+  }
   /* Trending Preview */
   .trendingPreview-movieList {
     overflow-y: visible;
@@ -559,7 +568,9 @@ a, a:visited, a:focus {
     margin-top: 403px;
     z-index: 1;
     position: absolute;
-    background-color: var(--purple-light-1);
+    background-color: var(--black);
+    height: 100%;
+    width: 100%;
   }
   .movieDetail-title {
     display: inline-block;
@@ -569,7 +580,7 @@ a, a:visited, a:focus {
   }
   .movieDetail-score {
     display: inline-block;
-    text-align: right;
+    text-align: left;
     width: 18%;
     font-weight: var(--font-weight-title2);
   }
@@ -607,6 +618,48 @@ a, a:visited, a:focus {
     height: 187.5px;
     min-height: 187.5px;
     max-height: 187.5px;
+  }
+  .movieDetail-infoContainer {
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 60px;
+  }
+  .imgMovieDetail {
+    display: initial;
+    max-width: 300px;
+  }  
+  .movieDetail-overageTitleOverview {
+    padding-left: 44px;
+    width: 40%;
+  }
+  .movieDetail-firstInfo{
+    display: flex;
+  }
+  .movieDetail-title{
+    font-family: var(--font-family-titles2);
+    font-weight: var(--font-weight-title1);
+    font-size: 40px;
+  }
+  .movieDetail-description{
+   padding-right: 50px; 
+  }
+  .btnPlay {
+    display: initial;
+    background-color: var(--orange);
+    padding: 10px 30px;
+    border: none;
+    font-family: var(--font-family-titles2);
+    font-weight: var(--font-weight-text1);
+    color: var(--blanco);
+    border-radius: 6px;
+    font-size: 18px;
+    margin-right: 15px;
+  }
+  .relatedMovies-scrollContainer p,
+  .relatedMovies-scrollContainer .likeBtn--container{
+    display: none;
   }
   /* Footer */
 }

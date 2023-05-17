@@ -23,7 +23,6 @@ function createMovies(movies, parentContainer) {                                
     likeButton.classList.add('likeBtn--container');
     likeButton.addEventListener('click', () => {
       likeButton.classList.toggle('likeBtn__container--liked')
-      
     });
 
     const videoInfo = document.createElement('div');
@@ -54,6 +53,9 @@ function createMovies(movies, parentContainer) {                                
     movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
+    if (!movie.poster_path) {                                                                   // Si no hay poster de la película, ocultamos el contenedor de esa película
+      movieContainer.style.display = "none";
+    }
 
     mediaRanting.append(mediaNameImg, spanMedia);
     videoInfo.append(parrafoVideoInfo, mediaRanting);
@@ -165,8 +167,10 @@ async function getTrendingMovies() {                                            
 }
 
 async function getMovieById(id) {                                                                     // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  const baseBgUrl = 'https://image.tmdb.org/t/p/original';                                            // Para imagenes de alta definición
   const { data: movie } = await api(`movie/${id}`);                                                   // Como el resultado no es un Objeto con lista y demas ya no tenemos que hacer un "data.results" simplemento lo guardmao en la varible "movie", para hacerlo Axios nos pide que lo hagamos con este formato "{data: movie}" para guardarlo en la variable "movie", es un Objeto con la información de mi película
-  const movieImgUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;                         // Guardo en la variable "MovieImgUrl" una imagen de 500 px con la id de la pelicula seleccionada
+  const movie_banner = (movie.backdrop_path ?                                                         // Guardo en la variable "movie_banner" una imagen de alta definición con la id de la pelicula seleccionada
+    baseBgUrl + movie.backdrop_path : `https://image.tmdb.org/t/p/w500/${movie.poster_path}`);        
   
   headerSection.style.background = `
     linear-gradient(
@@ -174,13 +178,15 @@ async function getMovieById(id) {                                               
       rgba(0, 0, 0, 0.35) 19.27%, 
       rgba(0, 0, 0, 0) 29.17%
       ),
-    url(${movieImgUrl})`;                                                                             // Muestro la URL de la imagen de la pelicula seleccionada con el "id"
+    url(${movie_banner})`;                                                                             // Muestro la URL de la imagen de la pelicula seleccionada con el "id"
   
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
-  movieDetailScore.textContent = movie.vote_average.toFixed(1);                                      // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
+  movieDetailScore.textContent = movie.vote_average.toFixed(1);                                       // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
+  movieDetailRelease.textContent = `Release Date:  ${movie.release_date}`;
+  movieDetailImg.setAttribute('src', `https://image.tmdb.org/t/p/w500/${movie.poster_path}`)
 
-  createCategories(movie.genres, movieDetailCategoriesList);                                         // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione
+  createCategories(movie.genres, movieDetailCategoriesList);                                          // Creo una lista de categorias que esta relacionadas a los generos de la pelicula que seleccione
   getRelatedMoviesById(id);
 }
 
@@ -189,5 +195,5 @@ async function getRelatedMoviesById(id) {
   const relatedMovies = data.results;
   console.log(relatedMovies);
   createMovies(relatedMovies, relatedMoviesContainer);
-  relatedMoviesContainer.scrollTo(0, 0);                                                             // Con el método "scrollTo(0, 0)" le indico al contenedor que comience en la pocición (0, 0)
+  relatedMoviesContainer.scrollTo(0, 0);                                                              // Con el método "scrollTo(0, 0)" le indico al contenedor que comience en la pocición (0, 0)
 }
