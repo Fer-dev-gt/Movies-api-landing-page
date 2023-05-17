@@ -1,0 +1,22 @@
+{
+  "name": "movies-api-landing-page",
+  "version": "1.0.0",
+  "description": "Here I'll show my skills and learning of consuming different APIs to create modern landing pages 🍿🎥🍿",
+  "main": "index.html",
+  "scripts": {
+    "publish": "gh-pages -d ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fer-dev-gt/Movies-api-landing-page.git"
+  },
+  "author": "@Fer-dev-gt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fer-dev-gt/Movies-api-landing-page/issues"
+  },
+  "homepage": "https://github.com/Fer-dev-gt/Movies-api-landing-page#readme",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
+}
