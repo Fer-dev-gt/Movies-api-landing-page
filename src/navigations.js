@@ -58,6 +58,7 @@ function homePage() {
   trendingPreviewSection.classList.remove('inactive');
   categoriesPreviewSection.classList.remove('inactive');
   genericSection.classList.add('inactive');
+  genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.add('inactive');
 
   getTrendingMoviesPreview();
@@ -79,6 +80,7 @@ function trendsPage() {
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
+  genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
 
   headerCategoryTitle.innerHTML = 'Tendencias';
@@ -100,6 +102,7 @@ function searchPage() {
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
+  genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
 
   const [_, query] = location.hash.split('=')                                // ['#search', 'buscador'] Ese es el array que extraigo de mi URL y lo uso para separar el valor del texto que escribio el usuario en el buscador y que será guardado en la variable "query"
@@ -121,6 +124,7 @@ function movieDetailsPage() {
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.add('inactive');
+  genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.remove('inactive');
 
   const [_, movieId] = location.hash.split('=')                               // ['#movie', '123456']
@@ -138,10 +142,12 @@ function categoriesPage() {
   headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.remove('inactive');
   searchForm.classList.add('inactive');
+  
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
+  genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
 
   const [_, categoryData] = location.hash.split('=')                                // Nos crea un nuevo Array tomando de separación el simbolo indicado (=), el array seria asi: ['#category', 'id-name'], Puedo asignar los valores como dice ECMAScript 6 con [varible1, variable2] y la primer variable solo la llame "_" porque no me va a sevir mucho en realidad

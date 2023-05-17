@@ -19,6 +19,7 @@ const relatedMoviesContainer = $('.relatedMovies-scrollContainer');
 const headerTitle = $('.header-title');
 const arrowBtn = $('.header-arrow');
 const headerCategoryTitle = $('.header-title--categoryView');
+const favoriteBtn = $('.likeBtn--container');
 
 const searchFormInput = $('#searchForm input');
 const searchFormBtn = $('#searchBtn');
