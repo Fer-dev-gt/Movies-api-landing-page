@@ -11,11 +11,19 @@ const api = axios.create({
 
 // Utils
 
-function createMovies(movies, parentContainer) {                                                      // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML
+const lazyLoader = new IntersectionObserver((entries) => {                                            // Creo una función guardada en una variable en donde creo una nueva instancia de "Intersection Observer" la cual recibe como parámetro los "entries" que son los elementos HTML en un Array (momvieImg) que voy a estar observardo si estan apareciendo en nuestro Viewport
+  entries.forEach((entry) => {                                                                        // Por cada elemento dentro de mi Array "entries" (moviesImg elementos HTML) voy a manejar su aparición dentro del Viewport
+    //console.log(entry.target.setAttribute);                                                         // Cada elemento "entry" tiene propiedad y atributos como un Objeto y en especial con el "target"
+    if(entry.isIntersecting) {                                                                        // Valido si la propiedad de "entry.target.isIntersecting" existe (true) lo que significa que el elemento HTML esta apariendo en el Viewport
+      const url = entry.target.getAttribute('data-img');                                              // Guardo en la variable "url" la información que tiene el atributo que yo nombre como "data-img" en mi archivo HTML y que creé en este archivo JavaScript "movieImg.setAttribute('data-img')" para luego pasarle la URL de la imagen que contiene al atributo "src" haciendo que se muestre en pantalla
+      entry.target.setAttribute('src', url);                                                          // Al encontrarse el elemento HTML en el Viewport indicado, le coloco la propiede "src" con su imagen correspondiente
+    };
+  });
+});
+
+function createMovies(movies, parentContainer, lazyLoad = false) {                                    // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML, el tercer parámetro es para cuando no queremos implementar un "Lazy Loading" por defecto lo colocamos como "false"
   parentContainer.innerHTML = '';
   movies.forEach(movie => {
-    ('#trendingPreview .trendingPreview-movieList');                                                  // Para seleccionar al elemento interno puedo usar los selectores como en CSS donde indico a cualquier elemento ('.trendingPreview-movieList') que se encuentre en su padre ('#trendingPreview')
-
     const movieContainer = document.createElement('div');
     movieContainer.classList.add('movie-container');
     
@@ -27,36 +35,31 @@ function createMovies(movies, parentContainer) {                                
 
     const videoInfo = document.createElement('div');
     videoInfo.classList.add('video--info');
-
-    const mediaName = document.createElement('div');
-    mediaName.classList.add('media--name');
-
     const parrafoVideoInfo = document.createElement('p');
     parrafoVideoInfo.innerText = `${movie.title}`;
     
     const mediaRanting = document.createElement('div');
     mediaRanting.classList.add('media--ranting');
-
     const mediaNameImg = document.createElement('img');
     mediaNameImg.setAttribute('src', './src/assets/start-flaticon.png')
-
     const spanMedia = document.createElement('span');
     spanMedia.innerText = `${movie.vote_average.toFixed(1)}`
 
-
     const movieImg = document.createElement('img');
     movieImg.classList.add('movie-img');
-    movieImg.setAttribute('alt', movie.title);
-    movieImg.setAttribute('src', 
-    `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
-    );
     movieImg.classList.add('fade-in');                                                          // Agrego una clase para que muestre una animación para cuando aparecen las imagenes
+    movieImg.setAttribute('alt', movie.title);
+    movieImg.setAttribute(                                                                      // Aqui me "invente" una propiedad del elemento HTML de "movieImg" para utilizarlo en un "Intersection Observer" para implementar un "Lazy Loader", osea que para "mientras" estos elementos no esten en el Viewport guardo la URL de la imagen que iria en el "src" en un "atributo temporal (data-img)" y cuando llegue el momento de mostrarlo paso ese URL al atributo "src"
+      lazyLoad ? 'data-img' : 'src',                                                            // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
+      `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
+    );
     movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
-    if (!movie.poster_path) {                                                                   // Si no hay poster de la película, ocultamos el contenedor de esa película
-      movieContainer.style.display = "none";
-    }
+    
+    if(lazyLoad) lazyLoader.observe(movieImg);                                                  // Implemento mi "Intersection Observer" que instancie en esta variable y le digo que observe a todos los Elementos "movieImg" siempre y cuando "lazyLoad" sea 'true'
+
+    if (!movie.poster_path) movieContainer.style.display = "none";                              // Si no hay poster de la película, ocultamos el contenedor de esa película
 
     mediaRanting.append(mediaNameImg, spanMedia);
     videoInfo.append(parrafoVideoInfo, mediaRanting);
@@ -85,8 +88,6 @@ function createCategories(categories, container) {                              
     categoryTitle.appendChild(categoryTitleText);
     categoryContainer.appendChild(categoryTitle);
     container.appendChild(categoryContainer);
-
-
     */
    const categoryContainer = document.createElement('div');
    categoryContainer.className = 'category-container';
@@ -100,8 +101,8 @@ function createCategories(categories, container) {                              
      // location.reload()
      console.log("click button by category", category.name)
      window.scroll({
-       top: 566,
-       behavior: 'smooth'
+        top: 566,
+        behavior: 'smooth'
      })
 
     })
@@ -135,7 +136,7 @@ async function getTrendingMoviesPreview () {                                    
   addLoadingScreenImageContainer(trendingMoviesPreviewList, 6);                                       // Agregando loading screen
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
-  createMovies(movies, trendingMoviesPreviewList);
+  createMovies(movies, trendingMoviesPreviewList, true);                                              // Mando 'true' en el tercer parámetro para que implemente un "Lazy Loading"
   console.log(movies);
 }
 
