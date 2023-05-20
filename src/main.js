@@ -50,6 +50,7 @@ function createMovies(movies, parentContainer) {                                
     movieImg.setAttribute('src', 
     `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
     );
+    movieImg.classList.add('fade-in');                                                          // Agrego una clase para que muestre una animación para cuando aparecen las imagenes
     movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
@@ -131,21 +132,22 @@ function convertMovieTime(runtime){                                             
 // API Callings
 
 async function getTrendingMoviesPreview () {                                                          // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  addLoadingScreenImageContainer(trendingMoviesPreviewList, 6);                                       // Agregando loading screen
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   createMovies(movies, trendingMoviesPreviewList);
   console.log(movies);
 }
 
-
 async function getCategoriesPreview() {                                                               // Consume una petición que retorna las categorias de pelicular y crea los elementos HTML para mostrarlos en el FrontEnd usando ".forEach()"
+  addLoadingScreenCategoriesContainer(categoriesPreviewList, 10);
   const { data } = await api(`genre/movie/list`);                                                     // Al usar Axios ya no tengo que escribir mi URL base ya que ya la declaré             
   const categories = data.genres;
   createCategories(categories, categoriesPreviewList);
 }
 
-
 async function getMoviesByCategory(id) {                                                              // Nos filtra la peliculas por categoria, recibiendo como parámetro el "id" del género 
+  addLoadingScreenImageContainer(genericSection, 6);                                                  // Agregando loading screen
   const { data } = await api(`discover/movie`, {                                                      // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
     params: {                                                                                         // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
       with_genres: id,
@@ -157,9 +159,9 @@ async function getMoviesByCategory(id) {                                        
   createMovies(movies, genericSection);
 }
 
-
 async function getMoviesBySearch(query) {                                                             // Se ejecuta cuando le damos click al boton de busqueda/lupa genera la lista de peliculas con el texto que el usuario quiere buscar y las muestra
   query = decodeURI(query);                                                                           // Decodificamos la URL de la variable "query" para quitarle el simbolo "%20" de los caracteres especiales y lo guardo en la variable "query" para poder buscar películas que tengan espacios y tildes en su nombre
+  addLoadingScreenImageContainer(genericSection, 6);                                                  // Agregando loading screen
   const { data } = await api(`search/movie`, {                                                      
     params: {                                                                                         
       query,                                                                                          // La API nos dice que en sus parametro tenemos que enviar el "texto de busqueda o QUERY" esto lo hacemos a traves del objeto "params" y como el atributo "query" se llama igual a nuestra variable "query" no es necesrio escribirlos en formato clave/valor, simplemente como "query"
@@ -171,14 +173,17 @@ async function getMoviesBySearch(query) {                                       
   createMovies(movies, genericSection);
 }
 
-
 async function getTrendingMovies() {                                                                  // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  addLoadingScreenImageContainer(genericSection, 6);                                                  // Agregando loading screen
   const { data } = await api(`trending/movie/day`);                                                   // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   createMovies(movies, genericSection);
 }
 
 async function getMovieById(id) {                                                                     // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
+  addLoadingScreenText(movieDetailTitle, 1);
+  addLoadingScreenText(movieDetailDescription, 5);
+  addLoadingScreenCategoriesContainer(movieDetailCategoriesList, 4);
   const baseBgUrl = 'https://image.tmdb.org/t/p/original';                                            // Para imagenes de alta definición
   const { data: movie } = await api(`movie/${id}`);                                                   // Como el resultado no es un Objeto con lista y demas ya no tenemos que hacer un "data.results" simplemento lo guardmao en la varible "movie", para hacerlo Axios nos pide que lo hagamos con este formato "{data: movie}" para guardarlo en la variable "movie", es un Objeto con la información de mi película
   const movie_banner = (movie.backdrop_path ?                                                         // Guardo en la variable "movie_banner" una imagen de alta definición con la id de la pelicula seleccionada
@@ -204,9 +209,52 @@ async function getMovieById(id) {                                               
 }
 
 async function getRelatedMoviesById(id) {
+  addLoadingScreenImageContainer(relatedMoviesContainer, 6);
   const { data } = await api(`movie/${id}/similar`);
   const relatedMovies = data.results;
   console.log(relatedMovies);
   createMovies(relatedMovies, relatedMoviesContainer);
   relatedMoviesContainer.scrollTo(0, 0);                                                              // Con el método "scrollTo(0, 0)" le indico al contenedor que comience en la pocición (0, 0)
+}
+
+
+// Loading Screens
+
+function addLoadingScreenImageContainer(nodeContainer, times) {
+  const movieContainer = document.createElement('div');
+  const movieImage = document.createElement('img');
+  movieContainer.classList.add('movie-container');
+  movieContainer.id = 'loading-screen';
+  movieImage.classList.add('movie-img');
+  movieImage.classList.add('loading-skeleton');
+  movieContainer.appendChild(movieImage);
+  for (let i = 0; i < times; i++) {
+      const nodeClone = movieContainer.cloneNode(true);
+      nodeContainer.appendChild(nodeClone);
+  }
+}
+
+function addLoadingScreenCategoriesContainer(nodeContainer, times) {
+  const categoryContainer = document.createElement('div');
+  const categoryTitle = document.createElement('h3');
+  categoryContainer.id = 'loading-screen';
+  categoryContainer.classList.add('category-container');
+  categoryTitle.classList.add('loading-skeleton');
+  categoryTitle.classList.add('skeleton-text');
+  categoryContainer.appendChild(categoryTitle);
+  for (let i = 0; i < times; i++) {
+      const nodeClone = categoryContainer.cloneNode(true);
+      nodeContainer.appendChild(nodeClone);
+  }
+}
+
+function addLoadingScreenText(nodeContainer, times) {
+  const textContainer = document.createElement('div');
+  textContainer.id = 'loading-screen';
+  textContainer.classList.add('loading-skeleton');
+  textContainer.classList.add('skeleton-desc');
+  for (let i = 0; i < times; i++) {
+      const nodeClone = textContainer.cloneNode(true);
+      nodeContainer.appendChild(nodeClone);
+  }
 }

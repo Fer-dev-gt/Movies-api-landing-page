@@ -142,7 +142,6 @@ function categoriesPage() {
   headerTitle.classList.remove('inactive');
   headerCategoryTitle.classList.remove('inactive');
   searchForm.classList.add('inactive');
-  
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
