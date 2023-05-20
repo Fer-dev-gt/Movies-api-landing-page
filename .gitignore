@@ -12,6 +12,7 @@ lerna-debug.log*
 .AppleDouble
 .LSOverride
 src/secrets.js
+refencias-programacion.js
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
