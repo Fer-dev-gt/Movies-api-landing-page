@@ -115,6 +115,7 @@ button {
 }
 .movie-img {
   border-radius: 8px;
+  min-height: 175px;
 }
 .categoriesPreview-list, .categories-list {
   display: flex;
@@ -347,6 +348,7 @@ button {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   padding: 32px 24px;
+  min-width: 100%;
   margin-top: 403px;
   z-index: 1;
   position: absolute;

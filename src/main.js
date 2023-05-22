@@ -17,6 +17,8 @@ const lazyLoader = new IntersectionObserver((entries) => {                      
     if(entry.isIntersecting) {                                                                        // Valido si la propiedad de "entry.target.isIntersecting" existe (true) lo que significa que el elemento HTML esta apariendo en el Viewport
       const url = entry.target.getAttribute('data-img');                                              // Guardo en la variable "url" la información que tiene el atributo que yo nombre como "data-img" en mi archivo HTML y que creé en este archivo JavaScript "movieImg.setAttribute('data-img')" para luego pasarle la URL de la imagen que contiene al atributo "src" haciendo que se muestre en pantalla
       entry.target.setAttribute('src', url);                                                          // Al encontrarse el elemento HTML en el Viewport indicado, le coloco la propiede "src" con su imagen correspondiente
+      console.log("💖");
+      lazyLoader.unobserve(entry.target);                                                             // Hago que despues de cada llamado lo deje de "observar"
     };
   });
 });
@@ -50,16 +52,21 @@ function createMovies(movies, parentContainer, lazyLoad = false) {              
     movieImg.classList.add('fade-in');                                                          // Agrego una clase para que muestre una animación para cuando aparecen las imagenes
     movieImg.setAttribute('alt', movie.title);
     movieImg.setAttribute(                                                                      // Aqui me "invente" una propiedad del elemento HTML de "movieImg" para utilizarlo en un "Intersection Observer" para implementar un "Lazy Loader", osea que para "mientras" estos elementos no esten en el Viewport guardo la URL de la imagen que iria en el "src" en un "atributo temporal (data-img)" y cuando llegue el momento de mostrarlo paso ese URL al atributo "src"
-      lazyLoad ? 'data-img' : 'src',                                                            // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
-      `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
+    lazyLoad ? 'data-img' : 'src',                                                              // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
+    `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
     );
     movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
+    movieImg.addEventListener('error', () => {
+      movieImg.setAttribute('src',
+        'https://static.platzi.com/static/images/error/img404.png'
+      );
+    });
     
-    if(lazyLoad) lazyLoader.observe(movieImg);                                                  // Implemento mi "Intersection Observer" que instancie en esta variable y le digo que observe a todos los Elementos "movieImg" siempre y cuando "lazyLoad" sea 'true'
+    if(lazyLoad) lazyLoader.observe(movieImg);                                                   // Implemento mi "Intersection Observer" que instancie en esta variable y le digo que observe a todos los Elementos "movieImg" siempre y cuando "lazyLoad" sea 'true'
 
-    if (!movie.poster_path) movieContainer.style.display = "none";                              // Si no hay poster de la película, ocultamos el contenedor de esa película
+    //if(!movie.poster_path) movieContainer.style.display = "none";                              // Si no hay poster de la película, ocultamos el contenedor de esa película
 
     mediaRanting.append(mediaNameImg, spanMedia);
     videoInfo.append(parrafoVideoInfo, mediaRanting);
@@ -157,7 +164,7 @@ async function getMoviesByCategory(id) {                                        
 
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   genericSection.innerHTML = ""; 
-  createMovies(movies, genericSection);
+  createMovies(movies, genericSection, true);
 }
 
 async function getMoviesBySearch(query) {                                                             // Se ejecuta cuando le damos click al boton de busqueda/lupa genera la lista de peliculas con el texto que el usuario quiere buscar y las muestra
@@ -200,6 +207,7 @@ async function getMovieById(id) {                                               
   
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
+  //if(movieDetailDescription.innerText == '') movieDetailDescription.style.width = '767px';          // Lo aplico si en el MovieDetail no existe una descripción y hay mucha info en blanco
   movieDetailScore.textContent = movie.vote_average.toFixed(1);                                       // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
   movieDetailRelease.textContent = `Release Date:  ${movie.release_date}`;
   movieDetailRuntime.textContent = `Duration: ${convertMovieTime(movie.runtime)}`;
