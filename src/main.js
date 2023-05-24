@@ -25,7 +25,7 @@ const lazyLoader = new IntersectionObserver((entries) => {                      
 
 function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} = {}) {              // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML, el tercer parámetro es un Objeto donde tiene 2 atributos, el primero es para cuando no queremos implementar un "Lazy Loading" por defecto lo colocamos como "false", el segundo nos ayuda para un "Infinite Scroll" es verdadero por defecto e indica en limpiar el contenedor de las peliculas
   if (clean) parentContainer.innerHTML = '';
-  
+  console.log(`pagina ${page}`);
   movies.forEach(movie => {
     const movieContainer = document.createElement('div');
     movieContainer.classList.add('movie-container');
@@ -182,41 +182,34 @@ async function getMoviesBySearch(query) {                                       
   createMovies(movies, genericSection);
 }
 
-async function getTrendingMovies(page = 1) {                                                          // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()", tambien generá un "Infinite Scroll"
+async function getTrendingMovies() {                                                                  // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()", tambien generá un "Infinite Scroll"
   if (page == 1) addLoadingScreenImageContainer(genericSection, 8);                                   // Agregando loading screen, solo se aplica una vez, cuando hacemos la petición a la API de la "page 1"
   const { data } = await api(`trending/movie/day`, {                                                  // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
     params: {                                                                                         // Le mando en opciones los parámetros que contienen la información de la "page" que solicitara la lista de películas a la API
       page, 
     }
-  });                                                   
+  });   
+  maxPage = data.total_pages;                                                                         // Para la sección de Tendencias asigno el valor de páginas maximas (en este caso dio 1000 páginas) a la variable "maxPage"
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   createMovies(movies, genericSection, {lazyLoad: true, clean: page == 1});                           // El tercer argumento que envío es un Objeto con las instrucciones de hacer un "Lazy loading" y si quiero que haga "Infite Scrolling", le pongo a la opción de "clean" "page == 1" para que solo se ejecute al inicio cuando hago la solicitud de la primera página
-
-  const btnLoadMore = document.createElement('button');
-  btnLoadMore.innerText = 'Cargar más';
-  btnLoadMore.addEventListener('click', () => {                                                       // Aplica recursividad para pedir la siguinete página de películas a la API
-    btnLoadMore.style.display = 'none';
-    getTrendingMovies(page + 1);                                                                      // Pide la siguiente página al sumarle uno a la variable "page"
-  });
-  genericSection.appendChild(btnLoadMore);
 }
 
-/*let page = 1;
- async function getPaginatedTrendingMovies() {
-  page++;
-  const { data } = await api(`trending/movie/day`, { 
-    params: {
-      page,
-    },
-  });                                                   
-  const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
-  createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
-
-  const btnLoadMore = document.createElement('button');
-  btnLoadMore.innerText = 'Cargar más';
-  btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
-  genericSection.appendChild(btnLoadMore);
-}*/
+async function getPaginatedTrendingMovies() {                                                         // Función que muestra las siguentes peliculas de la sección de Trending Movies al implementar un "Infinite Scroll"
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
+  const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
+  giconst isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false)
+  
+  if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
+    page++;
+    const { data } = await api(`trending/movie/day`, { 
+      params: {
+        page,
+      },
+    });   
+    const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+    createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
+  }
+}
 
 async function getMovieById(id) {                                                                     // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()"
   addLoadingScreenText(movieDetailTitle, 1);
