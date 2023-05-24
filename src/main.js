@@ -197,7 +197,7 @@ async function getTrendingMovies() {                                            
 async function getPaginatedTrendingMovies() {                                                         // Función que muestra las siguentes peliculas de la sección de Trending Movies al implementar un "Infinite Scroll"
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
   const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
-  giconst isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false)
+  const isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
   
   if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
     page++;
