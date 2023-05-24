@@ -165,7 +165,29 @@ async function getMoviesByCategory(id) {                                        
 
   const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
   genericSection.innerHTML = ""; 
-  createMovies(movies, genericSection, true);
+  maxPage = data.total_pages;                                                                         // Guardamos el valor maximo de las "pages" que nos devolvió la API
+  createMovies(movies, genericSection, {lazyLoad: true});
+}
+
+function getPaginatedMoviesByCategory(id) {                                                             // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "id" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias                                             
+  return async function () {                                                                            // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "id"
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
+    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
+    const isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
+    
+    if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
+      page++;
+      const { data } = await api(`discover/movie`, {                                                    // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
+        params: {                                                                                       // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
+          with_genres: id,
+          page,
+        },
+      });         
+    
+      const movies = data.results;                                                                      // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+      createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
+    }
+  }
 }
 
 async function getMoviesBySearch(query) {                                                             // Se ejecuta cuando le damos click al boton de busqueda/lupa genera la lista de peliculas con el texto que el usuario quiere buscar y las muestra
@@ -179,7 +201,30 @@ async function getMoviesBySearch(query) {                                       
   
   const movies = data.results;                                                                        
   genericSection.innerHTML = ""; 
+  maxPage = data.total_pages;
+  console.log(maxPage);
   createMovies(movies, genericSection);
+}
+
+function getPaginatedMoviesBySearch(query) {                                                            // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "query" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias
+  return async function () {                                                                            // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "query"
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
+    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
+    const isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
+    
+    if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
+      page++;
+      const { data } = await api(`search/movie`, {                                                      
+        params: {                                                                                         
+          query,                                                                                          // La API nos dice que en sus parametro tenemos que enviar el "texto de busqueda o QUERY" esto lo hacemos a traves del objeto "params" y como el atributo "query" se llama igual a nuestra variable "query" no es necesrio escribirlos en formato clave/valor, simplemente como "query"
+          page,
+        },
+      });         
+      
+      const movies = data.results;                                                                        
+      createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
+    }
+  }
 }
 
 async function getTrendingMovies() {                                                                  // Hace petición para recibir las 20 peliculas en tendencias y genera HTML para mostrarlas en un slide usando ".forEach()", tambien generá un "Infinite Scroll"

@@ -1,6 +1,7 @@
 let maxPage;                                                                  // Declaramos variabla para obtner el valor maximo de paginas que devuelve la API de cada sección que mostremos (Tendencias, categorías y búsqueda)
 let page = 1;                                                                 // Declaramos el valor inicial de "page" para mostrar las peliculas y luego implementar un "infite scroll"
 let infiniteScroll;                                                           // Esta función guardará una función para paginación con "Infinite Scroll" haciendo la solicitud a la API con su respectiva URL
+
 searchFormBtn.addEventListener('click', () => {                               // Le agrego un EventListener al butón de Form (Capture el valor del elemento HTML en el modulo "nodes.js" asi ya no lo tengo que hacer acá) y le digo que cada vez que le hagan click cambie el "hash" de la URL a #search=
   location.hash = `#search=${searchFormInput.value}`;                         // Cambio el "hash" y le agrego el valor del input del buscador de peliculas para que aparezca el texto de lo que ingreso el usuario
 });
@@ -51,9 +52,9 @@ function navigator () {                                                       //
   document.body.scrollTop = 0;                                                // Con estas dos lines de código, empleo el métedo "scrollTop()" para asegurarme que cada vez que entro a una nueva categoria o vista se abra en la parte arriba y evitar que se muestre al inicio en cualquier otra parte
   document.documentElement.scrollTop = 0;                                     // Esta 2 línea hacen lo mismo pero por temas de soporte a varios navegadores lo escribo de otra forma para que cubra a cualquier navegador (Parece ser Safari)
   
-  if(infiniteScroll) {                                                        // Al haber cambiado de página y haber ejecutado la función "infiteScroll" dentro de las funciónes de cada sección, volvemos a agregar el evento a "window" con la variable/función "infiteScroll" que ahora tiene el valor de la función correspondiente para aplicar un "infite scroll"
+  if(infiniteScroll)                                                          // Al haber cambiado de página y haber ejecutado la función "infiteScroll" dentro de las funciónes de cada sección, volvemos a agregar el evento a "window" con la variable/función "infiteScroll" que ahora tiene el valor de la función correspondiente para aplicar un "infite scroll"
     window.addEventListener('scroll', infiniteScroll, {passive: false});
-  }
+  page = 1;
 }
 
 function homePage() {
@@ -121,6 +122,8 @@ function searchPage() {
 
   const [_, query] = location.hash.split('=')                                // ['#search', 'buscador'] Ese es el array que extraigo de mi URL y lo uso para separar el valor del texto que escribio el usuario en el buscador y que será guardado en la variable "query"
   getMoviesBySearch(query);                                                  // Invocamos a la función para generar las fichas de las peliculas con la información de la variable "query" que guarda lo que el usuario quiere buscar
+
+  infiniteScroll = getPaginatedMoviesBySearch(query);                        // Aplicamos una solución elegante, esta "ejecutando" la función pero adentro esta la función "async/await" como función anonima y debido como funcionan los "Closure" se queda guardado la función más anidada incluso si se esta ejecutando la función externa, esto con el fin de poder pasar como parametro a "query"
 };
 
 function movieDetailsPage() {
@@ -170,4 +173,6 @@ function categoriesPage() {
   headerCategoryTitle.innerHTML = `${categoryNameAccent}`;                          // Indicamos que muestre el titulo de la categoria correspondiente
 
   getMoviesByCategory(categoryId);
+
+  infiniteScroll = getPaginatedMoviesByCategory(categoryId);                        // Aplicamos una solución elegante, esta "ejecutando" la función pero adentro esta la función "async/await" como función anonima y debido como funcionan los "Closure" se queda guardado la función más anidada incluso si se esta ejecutando la función externa, esto con el fin de poder pasar como parametro a "id"
 };
