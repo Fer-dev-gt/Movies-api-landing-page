@@ -1,3 +1,5 @@
+// Data API with Axios y Local Storage
+
 const api = axios.create({
   baseURL : 'https://api.themoviedb.org/3/',
   headers: {
@@ -8,6 +10,30 @@ const api = axios.create({
     'language': 'es-ES',                                                                              // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
   }
 })
+
+function likedMoviesList() {                                                                          // Retorna el Objeto de las peliculas que tengamos guardadas en Local Storage
+  const item = JSON.parse(localStorage.getItem('liked-movies'));                                      // "item" será "null" si no he guardado nada en el Local Storage en el atributo "liked-movies" y lo "Parseo" con el método JSON.parse()
+  let movies;   
+  
+  (item) ? movies = item : movies = {};                                                               // Si "item" contiene algún valor entonces guardo esos valores en "movies", pero si el "null" la variable "movies" será un Objeto vacío
+  return movies
+}
+
+function likeMovie(movie) {                                                                           // Esta función guarda o saca de Local Storage si ya esta registrado, los datos de una pelicula que ha sido seleccionada como Favorito, recibe como parámetro toda la información de la pelicula 
+  const likedMovies = likedMoviesList();                                                              // Guardo el Objeto con los datos de mis peliculas en la variable "likedMovies" que tambien será un Objeto, esa variable me servirá para saber si mi pelicula esta guardada en Local Storage
+  console.log('🍿');
+  console.log(likedMovies);                                                                           // Imprime el formato que voy a utilizar y que queda guardado en Local Storage y que usaré para mostrar la sección Favoritos, {'id de movie': {...Toda la info de la movie API}, 'id de movie2: {... Toda la info de la movie API}'}
+
+  if (likedMovies[movie.id]) {                                                                        // Valido si la "movie.id" existe en mi Objeto de película, y si es asi la elimino de mi Local Storage
+    console.log('La película ya estaba en LS, deberíamos eliminarla');
+    likedMovies[movie.id] = undefined;                                                                // removerla de localStorage al colocarle el "movie.id" como "undefined" lo que hace que JavaScript/Navegador lo ignore
+  } else {                
+    console.log('La película NO estaba en LS, deberíamos agregarla');
+    likedMovies[movie.id] = movie;                                                                    // agregar película a localStorage al ponerle los valores al atributo "likedMovies[movie.id]" con los datos de la pelicula que estoy validando
+  }
+
+  localStorage.setItem('liked-movies', JSON.stringify(likedMovies));                                  // Guardo en Local Storage el Objeto con todos los Objetos con Id de la pelicula y sus datos al atributo "liked.movies"
+}
 
 // Utils
 
@@ -32,8 +58,11 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     
     const likeButton = document.createElement('button');
     likeButton.classList.add('likeBtn--container');
-    likeButton.addEventListener('click', () => {
-      likeButton.classList.toggle('likeBtn__container--liked')
+    likedMoviesList()[movie.id] && likeButton.classList.add('likeBtn__container--liked');            // Valido si la pelicula que estoy mostrando ya ha sido guardado como favorita en el Local Storage usando la propiedad de Objeto [movie.id], si es así entonces la agrego la clase al boton de Favoritos "likeBtn__container--liked" y si no esta guardada no le agrega esa clase de CSS
+    likeButton.addEventListener('click', () => {                                                     // Botón para agregar peliculas a la sección de Favoritos
+      likeButton.classList.toggle('likeBtn__container--liked')                                       // Cambio la apariencia del botón
+      likeMovie(movie);
+      homePage();
     });
 
     const videoInfo = document.createElement('div');
@@ -206,7 +235,7 @@ async function getMoviesBySearch(query) {                                       
   createMovies(movies, genericSection);
 }
 
-function getPaginatedMoviesBySearch(query) {                                                            // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "query" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias
+function getPaginatedMoviesBySearch(query) {                                                          // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "query" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias
   return async function () {                                                                            // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "query"
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
     const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
@@ -292,6 +321,16 @@ async function getRelatedMoviesById(id) {
   console.log(relatedMovies);
   createMovies(relatedMovies, relatedMoviesContainer);
   relatedMoviesContainer.scrollTo(0, 0);                                                              // Con el método "scrollTo(0, 0)" le indico al contenedor que comience en la pocición (0, 0)
+}
+
+function getLikedMovies() {                                                                           // Esta función no consume datos de la API REST, lo consume desde Local Storage para mostrar las peliculas que quedaron guardadas como favoritas
+  const likedMovies = likedMoviesList();                                                              // Al ejecutar la función "likedMoviesList()" estoy recibiendo los datos de las peliculas que estan guardadas en Local Storage, esos datos los guardo en "likedMovies"
+  const moviesArray = Object.values(likedMovies);                                                     // Creo un Array usando el método "Object.values()" para obtener una lista con los "id" de las peliculas Favoritas, sera un Array con Objetos de cada pelicula
+  console.log('Info de peliculas guardadas en Favoritos 🌀');
+  console.log(moviesArray);
+  !moviesArray.length && likedMoviesSection.classList.add('inactive');
+  moviesArray.length && likedMoviesSection.classList.remove('inactive');
+  createMovies(moviesArray, likedMoviesListArticle, {lazyLoad: true, clean: true});                   // Le mando el Array con los Objetos que tienen los datos de las peliculas guardadas en Favoritos, y muestro esas peliculas
 }
 
 

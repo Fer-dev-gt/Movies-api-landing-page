@@ -24,6 +24,12 @@ window.addEventListener('DOMContentLoaded', () => {                           //
 );                                                                            // Esa propiedad de carga de estado la he llamado "loadUrl" entonces si cargamos la aplicación desde su inicio el "href" no deberá contener ningún tipo de "hash" pero si venimos de Youtube por ejemplo entonces el "loadUrl" nos dará todo el "href" se esa ruta de carga con todo y "hash"
 window.addEventListener('scroll', infiniteScroll, {passive: false});          // Agregamos un evento a la "Window" que ejecuta la función de "infiniteScroll" cada que hagamos "scroll" el tercer parametro es para evitar el "preventDefault()"
 
+window.addEventListener("storage", () => {
+  // When local storage changes, dump the list to
+  // the console.
+  console.log(JSON.parse(window.localStorage.getItem("liked-movies")));
+});
+
 searchForm.addEventListener('submit', (event) => {                            // Con esta instrucción le digo al formulario que cuando se haga un "submit/enter" haga un "preventDefault()"
   event.preventDefault();
 });
@@ -71,12 +77,14 @@ function homePage() {
 
   trendingPreviewSection.classList.remove('inactive');
   categoriesPreviewSection.classList.remove('inactive');
+  likedMoviesSection.classList.remove('inactive');
   genericSection.classList.add('inactive');
   genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.add('inactive');
 
-  getTrendingMoviesPreview();
+  getTrendingMoviesPreview();                                                // Estas 3 funciones muestran 3 secciones distintas de la página con info de las peliculas y categorias
   getCategoriesPreview();
+  getLikedMovies();   
 };
 
 function trendsPage() {
@@ -93,9 +101,10 @@ function trendsPage() {
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
+  likedMoviesSection.classList.add('inactive');
+  movieDetailSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
-  movieDetailSection.classList.add('inactive');
 
   headerCategoryTitle.innerHTML = 'Tendencias';
   getTrendingMovies();
@@ -116,6 +125,7 @@ function searchPage() {
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
+  likedMoviesSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
@@ -140,6 +150,7 @@ function movieDetailsPage() {
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
+  likedMoviesSection.classList.add('inactive');
   genericSection.classList.add('inactive');
   genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.remove('inactive');
@@ -162,6 +173,7 @@ function categoriesPage() {
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
+  likedMoviesSection.classList.add('inactive');
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
