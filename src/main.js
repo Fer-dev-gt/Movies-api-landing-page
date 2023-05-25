@@ -30,7 +30,7 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     const movieContainer = document.createElement('div');
     movieContainer.classList.add('movie-container');
     
-    const likeButton = document.createElement('btn');
+    const likeButton = document.createElement('button');
     likeButton.classList.add('likeBtn--container');
     likeButton.addEventListener('click', () => {
       likeButton.classList.toggle('likeBtn__container--liked')
