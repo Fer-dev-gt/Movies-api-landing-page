@@ -1,4 +1,4 @@
-const $ = (id) => document.querySelector(id);                                 // Defino una función base para seleccionar los elementos, la función se llama "$"
+const $ = (id) => document.querySelector(id);                                     // Defino una función base para seleccionar los elementos, la función se llama "$"
 
 
 // Sections
@@ -7,6 +7,7 @@ const trendingPreviewSection = $('#trendingPreview');
 const categoriesPreviewSection = $('#categoriesPreview');
 const genericSection = $('#genericList');
 const movieDetailSection = $('#movieDetail');
+const likedMoviesSection = $('#liked');
 
 // Lists & Containers
 const searchForm = $('#searchForm');
@@ -14,17 +15,19 @@ const trendingMoviesPreviewList = $('.trendingPreview-movieList');
 const categoriesPreviewList = $('.categoriesPreview-list');
 const movieDetailCategoriesList = $('#movieDetail .categories-list');
 const relatedMoviesContainer = $('.relatedMovies-scrollContainer');
+const likedMoviesListArticle = $('.liked-movieList');
 
 // Elements
 const headerTitle = $('.header-title');
 const arrowBtn = $('.header-arrow');
 const headerCategoryTitle = $('.header-title--categoryView');
+const selectLanguage = $('#languages')
 const favoriteBtn = $('.likeBtn--container');
+const trendingPreviewTitle = $('.trendingPreview-title');
+const trendingBtn = $('.trendingPreview-btn');
 
 const searchFormInput = $('#searchForm input');
 const searchFormBtn = $('#searchBtn');
-
-const trendingBtn = $('.trendingPreview-btn');
 
 const movieDetailTitle = $('.movieDetail-title');
 const movieDetailDescription = $('.movieDetail-description');

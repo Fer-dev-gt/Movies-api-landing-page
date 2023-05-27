@@ -15,7 +15,24 @@
 </head>
 <body>
   <header id="header" class="header-container">
-    <h1 class="header-title">Platzi Movies</h1>
+    <div class="header-internationalization">
+      <h1 class="header-title">Platzi Movies</h1>
+      <div class="header-chooseLanguage">
+        <h1>Choose your language: </h1>
+        <select class="header-languages" name="language" id="languages">            
+          <option value="en-EN">🇺🇸</option>
+          <option value="es-ES">🇪🇸</option>
+          <option value="pt-BR">🇧🇷</option>
+          <option value="fr-FR">🇫🇷</option>
+          <option value="de-DE">🇩🇪</option>
+          <option value="it-IT">🇮🇹</option>
+          <option value="ar-AR">🇸🇦</option>
+          <option value="ja-JA">🇯🇵</option>
+          <option value="he-HE">🇮🇱</option>
+          <option value="zh-ZH">🇨🇳</option>
+      </select>
+    </div>
+  </div>
     <span class="header-arrow inactive">&lt;</span>
     <h1 class="header-title header-title--categoryView">Acción</h1>
 
@@ -26,9 +43,14 @@
   </header>
 
   <section id="categoriesPreview" class="categoriesPreview-container">
-    
     <h2 class="categoriesPreview-title">Categorías</h2>
+
     <article class="categoriesPreview-list">
+      <div class="category-container category-container--loading"></div>
+      <div class="category-container category-container--loading"></div>
+      <div class="category-container category-container--loading">
+        <!-- <h3 id="id28" class="category-title">Romance</h3> -->
+      </div>
     </article>
   </section>
 
@@ -40,28 +62,49 @@
 
     <article class="trendingPreview-movieList">
       <!-- <div class="movie-container">
+        <div class="movie-container movie-container--loading"></div>
+        <div class="movie-container movie-container--loading"></div>
+        <div class="movie-container movie-container--loading">
+        <img
+          data-img="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg"
+          class="movie-img"
+          alt="Nombre de la película"
+        />
+      </div>  -->
+      </div>
+    </article>
+  </section>
+
+  <section id="liked" class="liked-container">
+    <div class="liked-header">
+      <h2 class="liked-title">Películas favoritas</h2>
+    </div>
+
+    <article class="liked-movieList">
+      <div class="movie-container">
         <img
           src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg"
           class="movie-img"
           alt="Nombre de la película"
         />
-      </div>  -->
+      </div>  
     </article>
   </section>
 
   <section id="genericList" class="genericList-container inactive">
-    <!-- <div class="movie-container">
-      <img
-        src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg"
-        class="movie-img"
-        alt="Nombre de la película"
-      />
-    </div> -->
+    <div class="movie-container movie-container--loading"></div>
+    <div class="movie-container movie-container--loading"></div>
+    <div class="movie-container movie-container--loading">
+      <!-- <img
+          src="https://image.tmdb.org/t/p/w300/adOzdWS35KAo21r9R4BuFCkLer6.jpg"
+          class="movie-img"
+          alt="Nombre de la película"
+        /> -->
+    </div>
   </section>
 
   <section id="movieDetail" class="movieDetail-container inactive">
-
-    <div class="movieDetail-infoContainer ">
+    <div class="movieDetail-infoContainer">
       <img class="imgMovieDetail inactive" alt="" src="" style="border-radius: 10px;">
 
       <section class="movieDetail-overageTitleOverview">
@@ -76,16 +119,26 @@
       </section>
     </div>
 
-  
-
-    <article class="categories-list"></article>
+    <article class="categories-list">
+      <div class="category-container category-container--loading"></div>
+      <div class="category-container category-container--loading"></div>
+      <div class="category-container category-container--loading">
+        <!-- <h3 id="category-title">Romance</h3> -->
+      </div>
+    </article>
 
     <article class="relatedMovies-container">
       <h2 class="relatedMovies-title">Películas similares</h2>
-      <div class="relatedMovies-scrollContainer"></div>
+
+      <div class="relatedMovies-scrollContainer">
+        <div id="movie-container movie-container--loading"></div>
+        <div id="movie-container movie-container--loading"></div>
+        <div id="movie-container movie-container--loading">
+          <!-- <img src="" alt="Nombre de la película" class="movie-img"> -->
+        </div>
+      </div>
     </article>
   </section>
-  
 
   <footer>
       <a href="https://www.themoviedb.org/documentation/api" class="logoTMDB"><img src="./src/assets/tmdb-logo-long.svg" alt="The movie Database logo" class="tmdb-logo"></a>
