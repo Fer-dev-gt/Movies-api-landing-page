@@ -52,7 +52,7 @@ function navigator () {                                                       //
   location.hash.startsWith('#trends')  ? trendsPage()       :                 // En vez de anidar y escribir tanso "if/else if" puedo "anidar Operadores Ternarios" para hacer las verificaciones
   location.hash.startsWith('#search=') ? searchPage()       :
   location.hash.startsWith('#movie=')  ? movieDetailsPage() :
-  location.hash.startsWith('#category=') ? categoriesPage()  :
+  location.hash.startsWith('#category=') ? categoriesPage() :
   homePage();
 
   document.body.scrollTop = 0;                                                // Con estas dos lines de código, empleo el métedo "scrollTop()" para asegurarme que cada vez que entro a una nueva categoria o vista se abra en la parte arriba y evitar que se muestre al inicio en cualquier otra parte

@@ -1,4 +1,12 @@
 // Data API with Axios y Local Storage
+const lang = localStorage.language;
+lan.value = lang !== '' ? lang: 'en';
+if(lan.value == "en-EN") trendingPreviewTitle.innerText = 'Trends';
+
+lan.addEventListener('change', () => {
+  localStorage.setItem('language', lan.value);
+  location.reload();
+})
 
 const api = axios.create({
   baseURL : 'https://api.themoviedb.org/3/',
@@ -7,7 +15,7 @@ const api = axios.create({
   },
   params: {                                                                                           // A parte de enviar mis API_KEY por los "headers", puedo usar "params" e indicar cualos son los parámetros que podemos agregar, siempre en formato de objeto, y los primero valores "key" pueden escribirse sin comillas (api_key: API_KEY)
     'api_key': API_KEY,
-    'language': 'es-ES',                                                                              // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
+    'language': lan.value,                                                                              // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
   }
 })
 
@@ -50,6 +58,8 @@ const lazyLoader = new IntersectionObserver((entries) => {                      
 });
 
 function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} = {}) {              // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML, el tercer parámetro es un Objeto donde tiene 2 atributos, el primero es para cuando no queremos implementar un "Lazy Loading" por defecto lo colocamos como "false", el segundo nos ayuda para un "Infinite Scroll" es verdadero por defecto e indica en limpiar el contenedor de las peliculas
+  console.log('😅');
+  console.log(navigator.language);
   if (clean) parentContainer.innerHTML = '';
   console.log(`pagina ${page}`);
   movies.forEach(movie => {
@@ -58,11 +68,12 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     
     const likeButton = document.createElement('button');
     likeButton.classList.add('likeBtn--container');
-    likedMoviesList()[movie.id] && likeButton.classList.add('likeBtn__container--liked');            // Valido si la pelicula que estoy mostrando ya ha sido guardado como favorita en el Local Storage usando la propiedad de Objeto [movie.id], si es así entonces la agrego la clase al boton de Favoritos "likeBtn__container--liked" y si no esta guardada no le agrega esa clase de CSS
+    likedMoviesList()[movie.id] && likeButton.classList.add('likeBtn__container--liked');            // Valido si la pelicula que estoy mostrando ya ha sido guardado como favorita en el Local Storage usando la propiedad de Objeto [movie.id], si es así entonces la agrego la clase al boton de Favoritos "likeBtn__container--liked" y si no esta guardada no le agrega esa clase de CSS. " if all values are truthy, the value of the last operand is returned." osea si mi pelicula esta en Local Storage, le agrego la clase indicada (despues del &&)
     likeButton.addEventListener('click', () => {                                                     // Botón para agregar peliculas a la sección de Favoritos
       likeButton.classList.toggle('likeBtn__container--liked')                                       // Cambio la apariencia del botón
       likeMovie(movie);
-      homePage();
+      homePage();                                                                                    // Para que se recargen los estilos del boton de favoritos y la sección de peliculas favoritas
+      console.log(api.params);
     });
 
     const videoInfo = document.createElement('div');
@@ -83,7 +94,7 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     movieImg.setAttribute('alt', movie.title);
     movieImg.setAttribute(                                                                      // Aqui me "invente" una propiedad del elemento HTML de "movieImg" para utilizarlo en un "Intersection Observer" para implementar un "Lazy Loader", osea que para "mientras" estos elementos no esten en el Viewport guardo la URL de la imagen que iria en el "src" en un "atributo temporal (data-img)" y cuando llegue el momento de mostrarlo paso ese URL al atributo "src"
     lazyLoad ? 'data-img' : 'src',                                                              // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
-    `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
+    `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
     );
     movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;

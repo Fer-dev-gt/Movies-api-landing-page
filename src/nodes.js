@@ -21,7 +21,9 @@ const likedMoviesListArticle = $('.liked-movieList');
 const headerTitle = $('.header-title');
 const arrowBtn = $('.header-arrow');
 const headerCategoryTitle = $('.header-title--categoryView');
+const lan = $('#languages')
 const favoriteBtn = $('.likeBtn--container');
+const trendingPreviewTitle = $('.trendingPreview-title');
 
 const searchFormInput = $('#searchForm input');
 const searchFormBtn = $('#searchBtn');
