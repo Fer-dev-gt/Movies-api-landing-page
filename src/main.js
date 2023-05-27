@@ -1,10 +1,11 @@
 // Data API with Axios y Local Storage
-const lang = localStorage.language;
-lan.value = lang !== '' ? lang: 'en';
-if(lan.value == "en-EN") trendingPreviewTitle.innerText = 'Trends';
 
-lan.addEventListener('change', () => {
-  localStorage.setItem('language', lan.value);
+const language = localStorage.language;                                                               // Uso el LocalStorage para guardar el idioma que voy a usar en la página
+selectLanguage.value = language !== '' ? language: 'en-EN';                                           // Si "lang" esta vació lo coloco en ingles "en"
+if(selectLanguage.value == "en-EN") trendingPreviewTitle.innerText = 'Trends';
+
+selectLanguage.addEventListener('change', () => {                                                     // Cada vez que cambia el valor del selector de idiomas cambio el valor que esta almacenado en LocalStorage y recargo la página
+  localStorage.setItem('language', selectLanguage.value);
   location.reload();
 })
 
@@ -14,8 +15,8 @@ const api = axios.create({
     'Content-Type': 'application/json;charset=utf-8',
   },
   params: {                                                                                           // A parte de enviar mis API_KEY por los "headers", puedo usar "params" e indicar cualos son los parámetros que podemos agregar, siempre en formato de objeto, y los primero valores "key" pueden escribirse sin comillas (api_key: API_KEY)
-    'api_key': API_KEY,
-    'language': lan.value,                                                                              // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
+    'api_key': API_KEY,                                                                               // Recuerda que con "params" le dices a axios que coloque los valores como si estuvieran en la URL base como endpoints
+    'language': selectLanguage.value,                                                                 // Aca cambio el lenguage de las películas cada vez que el selector con los idiomas cambie y le pongo su respectivo idioma        
   }
 })
 
@@ -57,9 +58,7 @@ const lazyLoader = new IntersectionObserver((entries) => {                      
   });
 });
 
-function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} = {}) {              // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML, el tercer parámetro es un Objeto donde tiene 2 atributos, el primero es para cuando no queremos implementar un "Lazy Loading" por defecto lo colocamos como "false", el segundo nos ayuda para un "Infinite Scroll" es verdadero por defecto e indica en limpiar el contenedor de las peliculas
-  console.log('😅');
-  console.log(navigator.language);
+function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} = {}) {               // Genera el HTML y estructura para mostrar la pelicular por categoria o tendencia o dependiendo del Array de "movies" que nos envien, el segundo parámetro es el elemento HTML que es el contenedor a donde sera insertado la estructura HTML, el tercer parámetro es un Objeto donde tiene 2 atributos, el primero es para cuando no queremos implementar un "Lazy Loading" por defecto lo colocamos como "false", el segundo nos ayuda para un "Infinite Scroll" es verdadero por defecto e indica en limpiar el contenedor de las peliculas
   if (clean) parentContainer.innerHTML = '';
   console.log(`pagina ${page}`);
   movies.forEach(movie => {
@@ -68,11 +67,11 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     
     const likeButton = document.createElement('button');
     likeButton.classList.add('likeBtn--container');
-    likedMoviesList()[movie.id] && likeButton.classList.add('likeBtn__container--liked');            // Valido si la pelicula que estoy mostrando ya ha sido guardado como favorita en el Local Storage usando la propiedad de Objeto [movie.id], si es así entonces la agrego la clase al boton de Favoritos "likeBtn__container--liked" y si no esta guardada no le agrega esa clase de CSS. " if all values are truthy, the value of the last operand is returned." osea si mi pelicula esta en Local Storage, le agrego la clase indicada (despues del &&)
-    likeButton.addEventListener('click', () => {                                                     // Botón para agregar peliculas a la sección de Favoritos
-      likeButton.classList.toggle('likeBtn__container--liked')                                       // Cambio la apariencia del botón
+    likedMoviesList()[movie.id] && likeButton.classList.add('likeBtn__container--liked');             // Valido si la pelicula que estoy mostrando ya ha sido guardado como favorita en el Local Storage usando la propiedad de Objeto [movie.id], si es así entonces la agrego la clase al boton de Favoritos "likeBtn__container--liked" y si no esta guardada no le agrega esa clase de CSS. " if all values are truthy, the value of the last operand is returned." osea si mi pelicula esta en Local Storage, le agrego la clase indicada (despues del &&)
+    likeButton.addEventListener('click', () => {                                                      // Botón para agregar peliculas a la sección de Favoritos
+      likeButton.classList.toggle('likeBtn__container--liked')                                        // Cambio la apariencia del botón
       likeMovie(movie);
-      homePage();                                                                                    // Para que se recargen los estilos del boton de favoritos y la sección de peliculas favoritas
+      homePage();                                                                                     // Para que se recargen los estilos del boton de favoritos y la sección de peliculas favoritas
       console.log(api.params);
     });
 
@@ -90,24 +89,23 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
 
     const movieImg = document.createElement('img');
     movieImg.classList.add('movie-img');
-    movieImg.classList.add('fade-in');                                                          // Agrego una clase para que muestre una animación para cuando aparecen las imagenes
+    movieImg.classList.add('fade-in');                                                              // Agrego una clase para que muestre una animación para cuando aparecen las imagenes
     movieImg.setAttribute('alt', movie.title);
-    movieImg.setAttribute(                                                                      // Aqui me "invente" una propiedad del elemento HTML de "movieImg" para utilizarlo en un "Intersection Observer" para implementar un "Lazy Loader", osea que para "mientras" estos elementos no esten en el Viewport guardo la URL de la imagen que iria en el "src" en un "atributo temporal (data-img)" y cuando llegue el momento de mostrarlo paso ese URL al atributo "src"
-    lazyLoad ? 'data-img' : 'src',                                                              // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
+    movieImg.setAttribute(                                                                          // Aqui me "invente" una propiedad del elemento HTML de "movieImg" para utilizarlo en un "Intersection Observer" para implementar un "Lazy Loader", osea que para "mientras" estos elementos no esten en el Viewport guardo la URL de la imagen que iria en el "src" en un "atributo temporal (data-img)" y cuando llegue el momento de mostrarlo paso ese URL al atributo "src"
+    lazyLoad ? 'data-img' : 'src',                                                                  // Si el "lazyLoad" es 'true' agrego la URL a la propiedad inventada "data-img" para mostrarla despues, ahora si es 'false' le muestro desde al inicio al pasarle la URL de la imagen a la propiedad "src"                                        
     `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
     );
-    movieImg.addEventListener('click', () => {                                                  // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
+    if(lazyLoad) lazyLoader.observe(movieImg);                                                      // Implemento mi "Intersection Observer" que instancie en esta variable y le digo que observe a todos los Elementos "movieImg" siempre y cuando "lazyLoad" sea 'true'
+    movieImg.addEventListener('click', () => {                                                      // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
+    //if(!movie.poster_path) movieContainer.style.display = "none";                                 // Si no hay poster de la película, ocultamos el contenedor de esa película
     movieImg.addEventListener('error', () => {
       movieImg.setAttribute('src',
         'https://static.platzi.com/static/images/error/img404.png'
       );
     });
     
-    if(lazyLoad) lazyLoader.observe(movieImg);                                                   // Implemento mi "Intersection Observer" que instancie en esta variable y le digo que observe a todos los Elementos "movieImg" siempre y cuando "lazyLoad" sea 'true'
-
-    //if(!movie.poster_path) movieContainer.style.display = "none";                              // Si no hay poster de la película, ocultamos el contenedor de esa película
 
     mediaRanting.append(mediaNameImg, spanMedia);
     videoInfo.append(parrafoVideoInfo, mediaRanting);
@@ -120,60 +118,35 @@ function createCategories(categories, container) {                              
   container.innerHTML = '';
 
   categories.forEach(category => {
-    /*
-    const categoryContainer = document.createElement('div');
-    categoryContainer.classList.add('category-container');
-
-    const categoryTitle = document.createElement('h3');
-    categoryTitle.classList.add('category-title');
-    categoryTitle.setAttribute('id', `id${category.id}`);
-
-    categoryTitle.addEventListener('click', () => {                                                   // Hago que cada elemento de los géneros manden a su respectiva categoría usando los #
-      location.hash = `#category=${category.id}-${category.name}`;
-    })
-
-    const categoryTitleText = document.createTextNode(category.name);
-    categoryTitle.appendChild(categoryTitleText);
-    categoryContainer.appendChild(categoryTitle);
-    container.appendChild(categoryContainer);
-    */
    const categoryContainer = document.createElement('div');
    categoryContainer.className = 'category-container';
 
    const button = document.createElement('button');
    button.className = 'category-btn';
    button.setAttribute('id', `id${category.id}`);
-
    button.addEventListener('click', () => {
-     location.hash = `#category=${category.id}-${category.name}`;
-     // location.reload()
+     location.hash = `#category=${category.id}-${category.name}`;                                     // Hago que cada elemento de los géneros manden a su respectiva categoría usando los #
      console.log("click button by category", category.name)
      window.scroll({
         top: 566,
         behavior: 'smooth'
      })
-
-    })
+    });
 
     const p = document.createElement('p');
     p.innerText = `${category.name}`;
     button.appendChild(p);
-    //categoryContainer.appendChild(button);
     container.appendChild(button);
   });
-
-    
 }
 
 function convertMovieTime(runtime){                                                                   // Función para convertir el formato de duración de peliculas de minutos a formato "horas minuto" 
-  if (runtime == 0) {
-    return '(?)';
-  }
+  if (runtime == 0) return '(?)';
+  
   const minutes = runtime;
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
   const formattedTime = `${hours}h ${remainingMinutes}m`;
-
   return formattedTime;
 }
 
@@ -209,22 +182,22 @@ async function getMoviesByCategory(id) {                                        
   createMovies(movies, genericSection, {lazyLoad: true});
 }
 
-function getPaginatedMoviesByCategory(id) {                                                             // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "id" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias                                             
-  return async function () {                                                                            // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "id"
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
-    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
-    const isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
+function getPaginatedMoviesByCategory(id) {                                                           // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "id" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias                                             
+  return async function () {                                                                          // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "id"
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                       // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
+    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                          // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
+    const isNotPageMax = page < maxPage;                                                              // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
     
-    if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
+    if(isScrollBottom && isNotPageMax){                                                               // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
       page++;
-      const { data } = await api(`discover/movie`, {                                                    // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
-        params: {                                                                                       // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
+      const { data } = await api(`discover/movie`, {                                                  // Hacemos una solicitud usando "Axios", ya tenemos registrada la URL base, ya solo tenemos que definir el "endpoint" en especifico que queremos utilizar
+        params: {                                                                                     // Cuando usamos Axios podemos enviar mas "params" dentro de la función a utilizar y no solo al inicio como arriba de este archivo, en este caso la API no pide el "id" de las categorias que quermos filtrar                 
           with_genres: id,
           page,
         },
       });         
     
-      const movies = data.results;                                                                      // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+      const movies = data.results;                                                                    // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
       createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
     }
   }
@@ -242,21 +215,21 @@ async function getMoviesBySearch(query) {                                       
   const movies = data.results;                                                                        
   genericSection.innerHTML = ""; 
   maxPage = data.total_pages;
-  console.log(maxPage);
+  console.log(`Páginas encontradas: ${maxPage}`);
   createMovies(movies, genericSection);
 }
 
 function getPaginatedMoviesBySearch(query) {                                                          // Esta función se ejecuta en la asignación a la variable "infiniteScroll" la función no es "async/await", la función interna si lo es, esto lo hacemos para poder pasarle el parámetro "query" a es función y poderla ejecutar como lo hicimos en el "infinite Scroll" de la sección de tendencias
-  return async function () {                                                                            // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "query"
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                         // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
-    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                            // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
-    const isNotPageMax = page < maxPage;                                                                // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
+  return async function () {                                                                          // Esta función anonima quedará guardada en la variable "infiniteScroll" y luego se ejecutará en el evento de "window" ya con el parametro "query"
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;                       // Atajo para guardar en 3 variable los valores de propiedades de "document.documentElement...atributo"
+    const isScrollBottom = (scrollTop + clientHeight) >= (scrollHeight - 15)                          // Calculamos si es "true" que el usuario hizo "scroll" hasta el footer o el fondo del Viewport
+    const isNotPageMax = page < maxPage;                                                              // Valido si ya llegamos al ultimo resultado de "page" (true/false) 
     
-    if(isScrollBottom && isNotPageMax){                                                                 // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
+    if(isScrollBottom && isNotPageMax){                                                               // Si el usuario ya llego al fondo de la pantalla hacemos la petición a la API con la "page" siguiente y si tambien no ha llegado al número máximo de páginas de la API
       page++;
       const { data } = await api(`search/movie`, {                                                      
         params: {                                                                                         
-          query,                                                                                          // La API nos dice que en sus parametro tenemos que enviar el "texto de busqueda o QUERY" esto lo hacemos a traves del objeto "params" y como el atributo "query" se llama igual a nuestra variable "query" no es necesrio escribirlos en formato clave/valor, simplemente como "query"
+          query,                                                                                      // La API nos dice que en sus parametro tenemos que enviar el "texto de busqueda o QUERY" esto lo hacemos a traves del objeto "params" y como el atributo "query" se llama igual a nuestra variable "query" no es necesrio escribirlos en formato clave/valor, simplemente como "query"
           page,
         },
       });         
@@ -291,7 +264,7 @@ async function getPaginatedTrendingMovies() {                                   
         page,
       },
     });   
-    const movies = data.results;                                                                        // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
+    const movies = data.results;                                                                      // Guardamos en la variable "movies" la propiedad de nuestra respuestas que se llama ".results" la otra propiedad es ".page"
     createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
   }
 }
@@ -308,14 +281,12 @@ async function getMovieById(id) {                                               
   headerSection.style.background = `
     linear-gradient(
       180deg, 
-      rgba(0, 0, 0, 0.35) 19.27%, 
-      rgba(0, 0, 0, 0) 29.17%
-      ),
-    url(${movie_banner})`;                                                                             // Muestro la URL de la imagen de la pelicula seleccionada con el "id"
+      rgba(0, 0, 0, 0.35) 25.27%, 
+      rgba(0, 0, 0, 0) 50.17%),
+    url(${movie_banner})`;                                                                            // Muestro la URL de la imagen de la pelicula seleccionada con el "id"
   
   movieDetailTitle.textContent = movie.title;
   movieDetailDescription.textContent = movie.overview;
-  //if(movieDetailDescription.innerText == '') movieDetailDescription.style.width = '767px';          // Lo aplico si en el MovieDetail no existe una descripción y hay mucha info en blanco
   movieDetailScore.textContent = movie.vote_average.toFixed(1);                                       // El método "toFixed(1)" lo usa para que solo muestre una cifra decimal
   movieDetailRelease.textContent = `Release Date:  ${movie.release_date}`;
   movieDetailRuntime.textContent = `Duration: ${convertMovieTime(movie.runtime)}`;
@@ -325,7 +296,7 @@ async function getMovieById(id) {                                               
   getRelatedMoviesById(id);
 }
 
-async function getRelatedMoviesById(id) {
+async function getRelatedMoviesById(id) {                                                             // Consulta y muestra las peliculas que estan relacionas a la que se muestra en MovieDetail y toma como parámetro su "id"
   addLoadingScreenImageContainer(relatedMoviesContainer, 6);
   const { data } = await api(`movie/${id}/similar`);
   const relatedMovies = data.results;
@@ -345,7 +316,7 @@ function getLikedMovies() {                                                     
 }
 
 
-// Loading Screens
+// Loading Screens por medio de JavaScript
 
 function addLoadingScreenImageContainer(nodeContainer, times) {
   const movieContainer = document.createElement('div');
@@ -356,8 +327,8 @@ function addLoadingScreenImageContainer(nodeContainer, times) {
   movieImage.classList.add('loading-skeleton');
   movieContainer.appendChild(movieImage);
   for (let i = 0; i < times; i++) {
-      const nodeClone = movieContainer.cloneNode(true);
-      nodeContainer.appendChild(nodeClone);
+    const nodeClone = movieContainer.cloneNode(true);
+    nodeContainer.appendChild(nodeClone);
   }
 }
 
@@ -370,8 +341,8 @@ function addLoadingScreenCategoriesContainer(nodeContainer, times) {
   categoryTitle.classList.add('skeleton-text');
   categoryContainer.appendChild(categoryTitle);
   for (let i = 0; i < times; i++) {
-      const nodeClone = categoryContainer.cloneNode(true);
-      nodeContainer.appendChild(nodeClone);
+    const nodeClone = categoryContainer.cloneNode(true);
+    nodeContainer.appendChild(nodeClone);
   }
 }
 
@@ -381,7 +352,7 @@ function addLoadingScreenText(nodeContainer, times) {
   textContainer.classList.add('loading-skeleton');
   textContainer.classList.add('skeleton-desc');
   for (let i = 0; i < times; i++) {
-      const nodeClone = textContainer.cloneNode(true);
-      nodeContainer.appendChild(nodeClone);
+    const nodeClone = textContainer.cloneNode(true);
+    nodeContainer.appendChild(nodeClone);
   }
 }

@@ -1,4 +1,4 @@
-const $ = (id) => document.querySelector(id);                                 // Defino una función base para seleccionar los elementos, la función se llama "$"
+const $ = (id) => document.querySelector(id);                                     // Defino una función base para seleccionar los elementos, la función se llama "$"
 
 
 // Sections
@@ -21,14 +21,13 @@ const likedMoviesListArticle = $('.liked-movieList');
 const headerTitle = $('.header-title');
 const arrowBtn = $('.header-arrow');
 const headerCategoryTitle = $('.header-title--categoryView');
-const lan = $('#languages')
+const selectLanguage = $('#languages')
 const favoriteBtn = $('.likeBtn--container');
 const trendingPreviewTitle = $('.trendingPreview-title');
+const trendingBtn = $('.trendingPreview-btn');
 
 const searchFormInput = $('#searchForm input');
 const searchFormBtn = $('#searchBtn');
-
-const trendingBtn = $('.trendingPreview-btn');
 
 const movieDetailTitle = $('.movieDetail-title');
 const movieDetailDescription = $('.movieDetail-description');
