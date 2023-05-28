@@ -495,7 +495,9 @@ a, a:visited, a:focus {
   display: none;
 }
 
-#max-page{
+#max-page {
+  width: 70%;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -597,7 +599,7 @@ a, a:visited, a:focus {
   }
   .header-searchForm input {
     width: 1120px;
-}
+  }
   /* Trending Preview */
   .trendingPreview-movieList {
     overflow-y: visible;
@@ -671,7 +673,7 @@ a, a:visited, a:focus {
   }
   .likeBtn__container--liked::before{
     content: '💛';
-}
+  }
   .video--info {
     display: flex;
     flex-direction: column;
@@ -907,5 +909,7 @@ a, a:visited, a:focus {
   #max-page h3{
     text-align: center;
     color: var(--aqua);
+    width: 70%;
+    margin: 0 auto;
   }
 }
