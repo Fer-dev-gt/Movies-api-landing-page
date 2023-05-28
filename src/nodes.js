@@ -8,6 +8,7 @@ const categoriesPreviewSection = $('#categoriesPreview');
 const genericSection = $('#genericList');
 const movieDetailSection = $('#movieDetail');
 const likedMoviesSection = $('#liked');
+const maxPageReached = $('#max-page');
 
 // Lists & Containers
 const searchForm = $('#searchForm');

@@ -30,8 +30,6 @@ function likedMoviesList() {                                                    
 
 function likeMovie(movie) {                                                                           // Esta función guarda o saca de Local Storage si ya esta registrado, los datos de una pelicula que ha sido seleccionada como Favorito, recibe como parámetro toda la información de la pelicula 
   const likedMovies = likedMoviesList();                                                              // Guardo el Objeto con los datos de mis peliculas en la variable "likedMovies" que tambien será un Objeto, esa variable me servirá para saber si mi pelicula esta guardada en Local Storage
-  console.log('🍿');
-  console.log(likedMovies);                                                                           // Imprime el formato que voy a utilizar y que queda guardado en Local Storage y que usaré para mostrar la sección Favoritos, {'id de movie': {...Toda la info de la movie API}, 'id de movie2: {... Toda la info de la movie API}'}
 
   if (likedMovies[movie.id]) {                                                                        // Valido si la "movie.id" existe en mi Objeto de película, y si es asi la elimino de mi Local Storage
     console.log('La película ya estaba en LS, deberíamos eliminarla');
@@ -99,7 +97,7 @@ function createMovies(movies, parentContainer, {lazyLoad = false, clean = true} 
     movieImg.addEventListener('click', () => {                                                      // Le agrego un evento al contenedor de la image de cada pelicula para que al darle click nos envie a la seccion de "movieDetail" con mas info de la pelicula seleccionada
       location.hash = `#movie=${movie.id}`;
     });
-    //if(!movie.poster_path) movieContainer.style.display = "none";                                 // Si no hay poster de la película, ocultamos el contenedor de esa película
+    if(!movie.poster_path) movieContainer.style.display = "none";                                 // Si no hay poster de la película, ocultamos el contenedor de esa película
     movieImg.addEventListener('error', () => {
       movieImg.setAttribute('src',
         'https://static.platzi.com/static/images/error/img404.png'
@@ -236,6 +234,8 @@ function getPaginatedMoviesBySearch(query) {                                    
       
       const movies = data.results;                                                                        
       createMovies(movies, genericSection, {lazyLoad: true, clean: false});  
+    } else if (isScrollBottom && !isNotPageMax){
+      maxPageReached.classList.remove('inactive');
     }
   }
 }
@@ -308,7 +308,7 @@ async function getRelatedMoviesById(id) {                                       
 function getLikedMovies() {                                                                           // Esta función no consume datos de la API REST, lo consume desde Local Storage para mostrar las peliculas que quedaron guardadas como favoritas
   const likedMovies = likedMoviesList();                                                              // Al ejecutar la función "likedMoviesList()" estoy recibiendo los datos de las peliculas que estan guardadas en Local Storage, esos datos los guardo en "likedMovies"
   const moviesArray = Object.values(likedMovies);                                                     // Creo un Array usando el método "Object.values()" para obtener una lista con los "id" de las peliculas Favoritas, sera un Array con Objetos de cada pelicula
-  console.log('Info de peliculas guardadas en Favoritos 🌀');
+  console.log('Lista de peliculas guardadas en Favoritos 🌀');
   console.log(moviesArray);
   !moviesArray.length && likedMoviesSection.classList.add('inactive');
   moviesArray.length && likedMoviesSection.classList.remove('inactive');

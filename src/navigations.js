@@ -73,6 +73,7 @@ function homePage() {                                                           
   genericSection.classList.add('inactive');
   genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.add('inactive');
+  maxPageReached.classList.add('inactive');
 
   getTrendingMoviesPreview();                                                                   // Estas 3 funciones muestran 3 secciones distintas de la página con info de las peliculas y categorias
   getCategoriesPreview();
@@ -95,6 +96,7 @@ function trendsPage() {                                                         
   categoriesPreviewSection.classList.add('inactive');
   likedMoviesSection.classList.add('inactive');
   movieDetailSection.classList.add('inactive');
+  maxPageReached.classList.add('inactive');
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
 
@@ -121,6 +123,7 @@ function searchPage() {                                                         
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
+  maxPageReached.classList.add('inactive');
 
   const [_, query] = location.hash.split('=')                                                   // ['#search', 'buscador'] Ese es el array que extraigo de mi URL y lo uso para separar el valor del texto que escribio el usuario en el buscador y que será guardado en la variable "query"
   getMoviesBySearch(query);                                                                     // Invocamos a la función para generar las fichas de las peliculas con la información de la variable "query" que guarda lo que el usuario quiere buscar
@@ -145,6 +148,7 @@ function movieDetailsPage() {                                                   
   genericSection.classList.add('inactive');
   genericSection.classList.remove('genericCuadros');
   movieDetailSection.classList.remove('inactive');
+  maxPageReached.classList.add('inactive');
 
   const [_, movieId] = location.hash.split('=')                                                 // ['#movie', '123456']
   getMovieById(movieId);
@@ -168,6 +172,7 @@ function categoriesPage() {                                                     
   genericSection.classList.remove('inactive');
   genericSection.classList.add('genericCuadros');
   movieDetailSection.classList.add('inactive');
+  maxPageReached.classList.add('inactive');
 
   const [_, categoryData] = location.hash.split('=')                                // Nos crea un nuevo Array tomando de separación el simbolo indicado (=), el array seria asi: ['#category', 'id-name'], Puedo asignar los valores como dice ECMAScript 6 con [varible1, variable2] y la primer variable solo la llame "_" porque no me va a sevir mucho en realidad
   const [categoryId, categoryName] = categoryData.split('-');                       // Vuelo a crear un nuevo Array con el objetivo de separa el número de id con el simbolo "-", el valor que necesito lo guardo en la variable "categoryId" (ECMAScript 6) y lo mando como argumento en la función para recibir las peliculas por categoria
